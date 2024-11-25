@@ -1,45 +1,52 @@
-# <img src="CustomPlatformColors/Images/SmallPreview.png" alt="Preview of animated ProtoFlux wires" width="32"/> CustomPlatformColors
+# <img src="CustomPlatformColors/Images/SmallPreview.png" alt="Preview of platform colors" width="32"/> CustomPlatformColors
 
-*Woof woof!* A [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) mod for [Resonite](https://resonite.com/) that adds customizable animated textures to ProtoFlux wires! 🐾
+*Woof woof!* A [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) mod for [Resonite](https://resonite.com/) that lets you customize your platform's color scheme! 🎨
 
-| Example | Closeup | Modified | Original |
-|:-------------:|:-------------:|:-------------:|:-------------:|
-| <img src="CustomPlatformColors/Images/FluxPreview.png" alt="Preview of animated ProtoFlux wires" width="300"/> | <img src="CustomPlatformColors/Images/SmallPreview.png" alt="Preview of animated ProtoFlux wires" width="300"/> | <img src="CustomPlatformColors/Images/Texture.png" alt="Preview of animated ProtoFlux wires" width="60"/> | <img src="CustomPlatformColors/Images/OriginalTexture.png" alt="Preview of animated ProtoFlux wires" width="60"/> |
+| Dashboard | UIX |
+|:-------------:|:-------------:|
+| <img src="CustomPlatformColors/Images/Home.png" alt="Default platform colors" width="300"/> | <img src="CustomPlatformColors/Images/UIX.png" alt="Customized platform colors" width="300"/> |
 
 ## 🦴 Features
 
-- Optimizes wire rendering with shared materials
-- Adds customizable scrolling animations to wire textures
-- Configurable animation speed and direction
-- Customizable wire texture appearance options
-- Fixes temporary wire connection issues
+- Customize all platform UI colors
+- Change neutral, hero, and accent colors
+- Personalize button and text appearances
+- Live color updates without restart
+- Easy configuration through mod settings
 
 ## 🐕 Installation
 
-1. Install [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) ([Wiki Installation Guide](https://github.com/resonite-modding-group/ResoniteModLoader/wiki/Installation))
-2. Place `CustomPlatformColors.dll` into your `rml_mods` folder. This folder should be at `C:\Program Files (x86)\Steam\steamapps\common\Resonite\rml_mods` for a default install. You can create it if it's missing, or if you launch the game once with ResoniteModLoader installed it will create this folder for you.
-3. Start the game. If you want to verify that the mod is working you can check your Resonite logs.
+1. Install [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader)
+2. Drop `CustomPlatformColors.dll` into your `rml_mods` folder
+3. Launch Resonite and check logs to verify installation
 
 ## 🎾 Configuration
 
-The mod comes with several configurable options:
+Customize these color groups:
 
-| Setting | Description |
-|---------|-------------|
-| Scroll Speed (X,Y) | Control the direction and speed of the animation |
-| Scroll Repeat Interval | How often the animation repeats |
-| Ping Pong Animation | Enable back-and-forth animation |
-| Custom Wire Textures | Use your own textures for wires |
-| Texture Filter Mode | Adjust texture rendering quality |
+| Category | Description |
+|----------|-------------|
+| Neutral Colors | Background and UI base colors |
+| Hero Colors | Primary accent and highlight colors |
+| Sub Colors | Secondary UI element colors |
+| Dark Colors | Darker variants for contrast |
+| Button Colors | Interactive element appearances |
 
-> **Note**: To switch a wire's appearance, it needs to be destroyed and re-created - simply reconnecting will reuse the old wire.
+## 🐾 Tips & Tricks
 
-## 🐾 Notes
+- Colors update in real-time - no restart needed!
+- Use the mod configuration menu to preview changes
+- Save your favorite color schemes
+- Share configurations with friends
 
-- Wire animations are local to users who have the mod installed
-- Temporary wire connection fixes are included for inputs/outputs on the "wrong" side
-- All settings can be adjusted on the fly through the RML config
+## 📝 Notes
+
+- All changes are local to your client
+- Compatible with other UI mods
+- Colors persist between sessions
 
 ---
 
-*Happy wiring! Bark bark!* 🐕
+*Happy customizing! Bark bark!* 🐕
+
+Made with 💖 by Dexy
