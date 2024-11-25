@@ -1,4 +1,4 @@
-# <img src="CustomPlatformColors/Images/SmallPreview.png" alt="Preview of platform colors" width="32"/> CustomPlatformColors
+CustomPlatformColors
 
 *Woof woof!* A [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) mod for [Resonite](https://resonite.com/) that lets you customize your platform's color scheme! 🎨
 
