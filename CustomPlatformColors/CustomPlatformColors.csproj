@@ -22,6 +22,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Reference Include="Enums.NET">
+		  <HintPath>$(ResonitePath)Resonite_Data\Managed\Enums.NET.dll</HintPath>
+		</Reference>
+		<Reference Include="FrooxEngine.Store">
+		  <HintPath>$(ResonitePath)Resonite_Data\Managed\FrooxEngine.Store.dll</HintPath>
+		</Reference>
 		<Reference Include="ResoniteModLoader">
 		    <HintPath>$(ResonitePath)Libraries\ResoniteModLoader.dll</HintPath>
 		    <Private>False</Private>
@@ -38,6 +44,9 @@
 		<Reference Include="Elements.Core">
 		    <HintPath>$(ResonitePath)Resonite_Data\Managed\Elements.Core.dll</HintPath>
 		    <Private>False</Private>
+		</Reference>
+		<Reference Include="SkyFrost.Base.Models">
+		  <HintPath>$(ResonitePath)Resonite_Data\Managed\SkyFrost.Base.Models.dll</HintPath>
 		</Reference>
 		<Reference Include="System">
 		    <HintPath>$(ResonitePath)Resonite_Data\Managed\System.dll</HintPath>
@@ -58,7 +67,7 @@
 	</ItemGroup>
 
 	  <ItemGroup>
-		<Using Remove="System.Net.Http" />
+		<Using Remove="System.Net.Http"/>
 	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(CopyToMods)'=='true'">
