@@ -2,9 +2,9 @@
 
 *Woof woof!* A [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) mod for [Resonite](https://resonite.com/) that lets you customize your platform's color scheme! 🎨
 
-| Dashboard | UIX |
-|:-------------:|:-------------:|
-| <img src="CustomPlatformColors/Images/Home.png" alt="Default platform colors" width="300"/> | <img src="CustomPlatformColors/Images/UIX.png" alt="Customized platform colors" width="300"/> |
+| Dashboard | UIX | Settings |
+|:-------------:|:-------------:|:-------------:|
+| <img src="CustomPlatformColors/Images/Home.png" alt="Default platform colors" width="300"/> | <img src="CustomPlatformColors/Images/UIX.png" alt="Customized platform colors" width="300"/> | <img src="CustomPlatformColors/Images/Settings.png" alt="Customized platform colors" width="300"/> |
 
 ## 🦴 Features
 
