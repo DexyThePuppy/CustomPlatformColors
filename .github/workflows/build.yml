@@ -18,13 +18,17 @@ jobs:
       with:
         dotnet-version: '7.0.x'
     
-    - name: Download Resonite
+    - name: Download and setup SteamCMD
       shell: pwsh
       run: |
-        [System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}
-        $webClient = New-Object System.Net.WebClient
-        $webClient.DownloadFile("https://clouddelivery.resonite.com/BuildData/Live/Windows/Resonite.zip", "Resonite.zip")
-        Expand-Archive -Path "Resonite.zip" -DestinationPath "Resonite"
+        Invoke-WebRequest -Uri "https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip" -OutFile "steamcmd.zip"
+        Expand-Archive -Path "steamcmd.zip" -DestinationPath "steamcmd"
+        
+    - name: Download Resonite using SteamCMD
+      shell: pwsh
+      run: |
+        cd steamcmd
+        ./steamcmd.exe +force_install_dir ../Resonite +login anonymous +app_update 2519830 validate +quit
         
     - name: Download ResoniteModLoader
       shell: pwsh
