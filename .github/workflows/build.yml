@@ -30,13 +30,30 @@ jobs:
       shell: pwsh
       run: |
         cd steamcmd
-        Start-Process -FilePath "./steamcmd.exe" -ArgumentList "+@sSteamCmdForcePlatformType windows +force_install_dir ../Resonite +login anonymous +app_license_request 2519830 +app_update 2519830 validate +quit" -Wait -NoNewWindow
+        # Try the license request multiple times
+        $maxAttempts = 3
+        $attempt = 1
+        do {
+          Write-Host "Attempt $attempt of $maxAttempts to download Resonite..."
+          Start-Process -FilePath "./steamcmd.exe" -ArgumentList "+@sSteamCmdForcePlatformType windows +force_install_dir ../Resonite +login anonymous +app_license_request 2519830 +app_update 2519830 validate +quit" -Wait -NoNewWindow
+          $success = Test-Path "../Resonite/Resonite.exe"
+          if ($success) { break }
+          $attempt++
+          Start-Sleep -Seconds 5
+        } while ($attempt -le $maxAttempts)
+        if (-not $success) {
+          throw "Failed to download Resonite after $maxAttempts attempts"
+        }
         
     - name: Download ResoniteModLoader
       shell: pwsh
       run: |
-        Invoke-WebRequest -Uri "https://github.com/resonite-modding-group/ResoniteModLoader/releases/latest/download/ResoniteModLoader.dll" -OutFile "Resonite/Libraries/ResoniteModLoader.dll"
+        # Create necessary directories
+        New-Item -ItemType Directory -Force -Path "Resonite/Libraries"
         New-Item -ItemType Directory -Force -Path "Resonite/rml_libs"
+        
+        # Download the files
+        Invoke-WebRequest -Uri "https://github.com/resonite-modding-group/ResoniteModLoader/releases/latest/download/ResoniteModLoader.dll" -OutFile "Resonite/Libraries/ResoniteModLoader.dll"
         Invoke-WebRequest -Uri "https://github.com/resonite-modding-group/ResoniteModLoader/releases/latest/download/0Harmony.dll" -OutFile "Resonite/rml_libs/0Harmony.dll"
     
     - name: Restore dependencies
