@@ -21,7 +21,9 @@ jobs:
     - name: Download Resonite
       shell: pwsh
       run: |
-        Invoke-WebRequest -Uri "https://clouddelivery.resonite.com/BuildData/Live/Windows/Resonite.zip" -OutFile "Resonite.zip"
+        [System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}
+        $webClient = New-Object System.Net.WebClient
+        $webClient.DownloadFile("https://clouddelivery.resonite.com/BuildData/Live/Windows/Resonite.zip", "Resonite.zip")
         Expand-Archive -Path "Resonite.zip" -DestinationPath "Resonite"
         
     - name: Download ResoniteModLoader
