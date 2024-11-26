@@ -26,89 +26,96 @@ namespace CustomPlatformColors
 
         //The following
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<bool> enabled = new("enabled", "Should the mod be enabled", () => true);
+        public static readonly ModConfigurationKey<bool> enabled = new("enabled", "Should the mod be enabled", () => true);
 
         // Neutral colors
         [AutoRegisterConfigKey] 
-        private static readonly ModConfigurationKey<colorX> neutralDark = new("neutralDark", "Dark neutral color", () => RadiantUI_Constants.Neutrals.DARK);
+        public static readonly ModConfigurationKey<colorX> neutralDark = new("neutralDark", "Dark neutral color", () => RadiantUI_Constants.Neutrals.DARK);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> neutralMid = new("neutralMid", "Mid neutral color", () => RadiantUI_Constants.Neutrals.MID);
+        public static readonly ModConfigurationKey<colorX> neutralMid = new("neutralMid", "Mid neutral color", () => RadiantUI_Constants.Neutrals.MID);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> neutralsMid = new("neutralsMid", "Color for regular items", () => RadiantUI_Constants.Neutrals.MID);
+        public static readonly ModConfigurationKey<colorX> neutralsMid = new("neutralsMid", "Color for regular items", () => RadiantUI_Constants.Neutrals.MID);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> neutralLight = new("neutralLight", "Light neutral color", () => RadiantUI_Constants.Neutrals.LIGHT);
+        public static readonly ModConfigurationKey<colorX> neutralLight = new("neutralLight", "Light neutral color", () => RadiantUI_Constants.Neutrals.LIGHT);
 
         // Hero colors
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> heroYellow = new("heroYellow", "Hero yellow color", () => RadiantUI_Constants.Hero.YELLOW);
+        public static readonly ModConfigurationKey<colorX> heroYellow = new("heroYellow", "Hero yellow color", () => RadiantUI_Constants.Hero.YELLOW);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> heroGreen = new("heroGreen", "Hero green color", () => RadiantUI_Constants.Hero.GREEN);
+        public static readonly ModConfigurationKey<colorX> heroGreen = new("heroGreen", "Hero green color", () => RadiantUI_Constants.Hero.GREEN);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> heroRed = new("heroRed", "Hero red color", () => RadiantUI_Constants.Hero.RED);
+        public static readonly ModConfigurationKey<colorX> heroRed = new("heroRed", "Hero red color", () => RadiantUI_Constants.Hero.RED);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> heroPurple = new("heroPurple", "Hero purple color", () => RadiantUI_Constants.Hero.PURPLE);
+        public static readonly ModConfigurationKey<colorX> heroPurple = new("heroPurple", "Hero purple color", () => RadiantUI_Constants.Hero.PURPLE);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> heroCyan = new("heroCyan", "Hero cyan color", () => RadiantUI_Constants.Hero.CYAN);
+        public static readonly ModConfigurationKey<colorX> heroCyan = new("heroCyan", "Hero cyan color", () => RadiantUI_Constants.Hero.CYAN);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> heroOrange = new("heroOrange", "Hero orange color", () => RadiantUI_Constants.Hero.ORANGE);
+        public static readonly ModConfigurationKey<colorX> heroOrange = new("heroOrange", "Hero orange color", () => RadiantUI_Constants.Hero.ORANGE);
 
         // Sub colors
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> subYellow = new("subYellow", "Sub yellow color", () => RadiantUI_Constants.Sub.YELLOW);
+        public static readonly ModConfigurationKey<colorX> subYellow = new("subYellow", "Sub yellow color", () => RadiantUI_Constants.Sub.YELLOW);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> subGreen = new("subGreen", "Sub green color", () => RadiantUI_Constants.Sub.GREEN);
+        public static readonly ModConfigurationKey<colorX> subGreen = new("subGreen", "Sub green color", () => RadiantUI_Constants.Sub.GREEN);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> subRed = new("subRed", "Sub red color", () => RadiantUI_Constants.Sub.RED);
+        public static readonly ModConfigurationKey<colorX> subRed = new("subRed", "Sub red color", () => RadiantUI_Constants.Sub.RED);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> subPurple = new("subPurple", "Sub purple color", () => RadiantUI_Constants.Sub.PURPLE);
+        public static readonly ModConfigurationKey<colorX> subPurple = new("subPurple", "Sub purple color", () => RadiantUI_Constants.Sub.PURPLE);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> subCyan = new("subCyan", "Sub cyan color", () => RadiantUI_Constants.Sub.CYAN);
+        public static readonly ModConfigurationKey<colorX> subCyan = new("subCyan", "Sub cyan color", () => RadiantUI_Constants.Sub.CYAN);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> subOrange = new("subOrange", "Sub orange color", () => RadiantUI_Constants.Sub.ORANGE);
+        public static readonly ModConfigurationKey<colorX> subOrange = new("subOrange", "Sub orange color", () => RadiantUI_Constants.Sub.ORANGE);
 
         // Dark colors
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> darkYellow = new("darkYellow", "Dark yellow color", () => RadiantUI_Constants.Dark.YELLOW);
+        public static readonly ModConfigurationKey<colorX> darkYellow = new("darkYellow", "Dark yellow color", () => RadiantUI_Constants.Dark.YELLOW);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> darkGreen = new("darkGreen", "Dark green color", () => RadiantUI_Constants.Dark.GREEN);
+        public static readonly ModConfigurationKey<colorX> darkGreen = new("darkGreen", "Dark green color", () => RadiantUI_Constants.Dark.GREEN);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> darkRed = new("darkRed", "Dark red color", () => RadiantUI_Constants.Dark.RED);
+        public static readonly ModConfigurationKey<colorX> darkRed = new("darkRed", "Dark red color", () => RadiantUI_Constants.Dark.RED);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> darkPurple = new("darkPurple", "Dark purple color", () => RadiantUI_Constants.Dark.PURPLE);
+        public static readonly ModConfigurationKey<colorX> darkPurple = new("darkPurple", "Dark purple color", () => RadiantUI_Constants.Dark.PURPLE);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> darkCyan = new("darkCyan", "Dark cyan color", () => RadiantUI_Constants.Dark.CYAN);
+        public static readonly ModConfigurationKey<colorX> darkCyan = new("darkCyan", "Dark cyan color", () => RadiantUI_Constants.Dark.CYAN);
         [AutoRegisterConfigKey]
-        private static readonly ModConfigurationKey<colorX> darkOrange = new("darkOrange", "Dark orange color", () => RadiantUI_Constants.Dark.ORANGE);
+        public static readonly ModConfigurationKey<colorX> darkOrange = new("darkOrange", "Dark orange color", () => RadiantUI_Constants.Dark.ORANGE);
 
+        // UI Button Colors
+        [AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<colorX> buttonTextColor = new("buttonTextColor", "Button text color", () => RadiantUI_Constants.TEXT_COLOR);
+        [AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<colorX> buttonNormalColor = new("buttonNormalColor", "Button normal color", () => RadiantUI_Constants.BUTTON_COLOR);
+        [AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<colorX> buttonHoverColor = new("buttonHoverColor", "Button hover color", () => RadiantUI_Constants.GetTintedButton(RadiantUI_Constants.BUTTON_COLOR));
 		// Spacer
 		[AutoRegisterConfigKey]
-		private static readonly ModConfigurationKey<dummy> spacer1 = new("", "");
+		public static readonly ModConfigurationKey<dummy> spacer1 = new("", "");
 		// Inventory Browser Folder Colours
 		[AutoRegisterConfigKey] 
-		private static readonly ModConfigurationKey<colorX> inventoryDeselectedColor = new("inventoryDeselectedColor", "", () => RadiantUI_Constants.Neutrals.MID);
+		public static readonly ModConfigurationKey<colorX> inventoryDeselectedColor = new("inventoryDeselectedColor", "", () => RadiantUI_Constants.Neutrals.MID);
 		[AutoRegisterConfigKey] 
-		private static readonly ModConfigurationKey<colorX> inventorySelectedColor = new("inventorySelectedColor", "", () => RadiantUI_Constants.Sub.GREEN);
+		public static readonly ModConfigurationKey<colorX> inventorySelectedColor = new("inventorySelectedColor", "", () => RadiantUI_Constants.Sub.GREEN);
         [AutoRegisterConfigKey] 
-		private static readonly ModConfigurationKey<colorX> inventorySelectedTextColor = new("inventorySelectedTextColor", "", () => RadiantUI_Constants.Hero.GREEN);
+		public static readonly ModConfigurationKey<colorX> inventorySelectedTextColor = new("inventorySelectedTextColor", "", () => RadiantUI_Constants.Hero.GREEN);
 		[AutoRegisterConfigKey] 
-		private static readonly ModConfigurationKey<colorX> inventoryFolderColor = new("inventoryFolderColor", "", () => RadiantUI_Constants.Sub.YELLOW);
+		public static readonly ModConfigurationKey<colorX> inventoryFolderColor = new("inventoryFolderColor", "", () => RadiantUI_Constants.Sub.YELLOW);
 		[AutoRegisterConfigKey] 
-		private static readonly ModConfigurationKey<colorX> inventoryFolderTextColor = new("inventoryFolderTextColor", "", () => RadiantUI_Constants.Hero.YELLOW);
+		public static readonly ModConfigurationKey<colorX> inventoryFolderTextColor = new("inventoryFolderTextColor", "", () => RadiantUI_Constants.Hero.YELLOW);
 		[AutoRegisterConfigKey] 
-		private static readonly ModConfigurationKey<colorX> inventoryLinkColor = new("inventoryLinkColor", "", () => RadiantUI_Constants.Sub.CYAN);
+		public static readonly ModConfigurationKey<colorX> inventoryLinkColor = new("inventoryLinkColor", "", () => RadiantUI_Constants.Sub.CYAN);
 		[AutoRegisterConfigKey] 
-		private static readonly ModConfigurationKey<colorX> inventoryLinkTextColor = new("inventoryLinkTextColor", "", () => RadiantUI_Constants.Hero.CYAN);
+		public static readonly ModConfigurationKey<colorX> inventoryLinkTextColor = new("inventoryLinkTextColor", "", () => RadiantUI_Constants.Hero.CYAN);
 		[AutoRegisterConfigKey] 
-		private static readonly ModConfigurationKey<colorX> inventoryFavouriteColor = new("inventoryFavouriteColor", "", () => RadiantUI_Constants.Sub.PURPLE);
+		public static readonly ModConfigurationKey<colorX> inventoryFavouriteColor = new("inventoryFavouriteColor", "", () => RadiantUI_Constants.Sub.PURPLE);
 		// This is hacky don't ever hard code these values if you can avoid it but for the sake of customisation I will leave it
 		[AutoRegisterConfigKey] 
-		private static readonly ModConfigurationKey<colorX> inventoryButtonsNormalColor = new("inventoryButtonsNormalColor", "", () => RadiantUI_Constants.Neutrals.MID);
+		public static readonly ModConfigurationKey<colorX> inventoryButtonsNormalColor = new("inventoryButtonsNormalColor", "", () => RadiantUI_Constants.Neutrals.MID);
 		[AutoRegisterConfigKey] 
-		private static readonly ModConfigurationKey<colorX> inventoryButtonsHighlightedColor = new("inventoryButtonsHighlightedColor", "", () => new colorX(0.37f, 0.41f, 0.46f, 1.0f, ColorProfile.sRGB));
+		public static readonly ModConfigurationKey<colorX> inventoryButtonsHighlightedColor = new("inventoryButtonsHighlightedColor", "", () => new colorX(0.37f, 0.41f, 0.46f, 1.0f, ColorProfile.sRGB));
 		[AutoRegisterConfigKey] 
-		private static readonly ModConfigurationKey<colorX> inventoryButtonsPressColor = new("inventoryButtonsPressColor", "", () => new colorX(0.43f, 0.54f, 0.71f, 1.0f, ColorProfile.sRGB));
+		public static readonly ModConfigurationKey<colorX> inventoryButtonsPressColor = new("inventoryButtonsPressColor", "", () => new colorX(0.43f, 0.54f, 0.71f, 1.0f, ColorProfile.sRGB));
 		[AutoRegisterConfigKey] 
-		private static readonly ModConfigurationKey<colorX> inventoryButtonsDisabledColor = new("inventoryButtonsDisabledColor", "", () => RadiantUI_Constants.Neutrals.DARK);
+		public static readonly ModConfigurationKey<colorX> inventoryButtonsDisabledColor = new("inventoryButtonsDisabledColor", "", () => RadiantUI_Constants.Neutrals.DARK);
 
 		public bool Enabled => Config?.GetValue(enabled) ?? false;
 
@@ -261,34 +268,32 @@ namespace CustomPlatformColors
 
 			[HarmonyPatch("ProcessItem")]
 			static void Postfix(InventoryItemUI item) {
-				Msg("Test Test Test");
-				
-				if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(enabled)) return;
+				if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(enabled) || item == null) return;
 
 				FieldInfo recordField = item.GetType().GetField("Item", BindingFlags.NonPublic | BindingFlags.Instance);
-				if (recordField != null) {
-					FrooxEngine.Store.Record recordValue = (FrooxEngine.Store.Record)recordField.GetValue(item);
+				if (recordField == null) return;
 
-					FrooxEngine.Store.Record item2 = recordValue;
-					Uri uri = ((item2 != null) ? item2.GetUrl(item.Cloud.Platform) : null);
-					if (uri != null) {
-						foreach (FavoriteEntity value in Enums.GetValues<FavoriteEntity>((EnumMemberSelection)0)) {
-							if (uri == item.Engine.Cloud.Profile.GetCurrentFavorite(value)) {
-								item.NormalColor.Value = Config.GetValue(inventoryFavouriteColor);
-								item.SelectedColor.Value = Config.GetValue(inventoryFavouriteColor).MulRGB(2f);
-								return;
-							}
+				var recordValue = recordField.GetValue(item) as FrooxEngine.Store.Record;
+				if (recordValue == null || item.Cloud?.Platform == null) return;
+
+				Uri? uri = recordValue.GetUrl(item.Cloud.Platform);
+				if (uri != null) {
+					foreach (FavoriteEntity value in Enums.GetValues<FavoriteEntity>()) {
+						if (uri == item.Engine.Cloud.Profile.GetCurrentFavorite(value)) {
+							item.NormalColor.Value = Config.GetValue(inventoryFavouriteColor);
+							item.SelectedColor.Value = Config.GetValue(inventoryFavouriteColor).MulRGB(2f);
+							return;
 						}
 					}
 				}
 
 				FieldInfo directoryField = item.GetType().GetField("Directory", BindingFlags.NonPublic | BindingFlags.Instance);
 				if (directoryField != null) {
-					RecordDirectory directoryValue = (RecordDirectory)directoryField.GetValue(item);
+					RecordDirectory? directoryValue = directoryField.GetValue(item) as RecordDirectory;
 
 					if (directoryValue != null) {
-						item.NormalColor.Value = (directoryValue.IsLink ? Config.GetValue(inventoryLinkColor) : Config.GetValue(inventoryFolderColor));
-						item.NormalText.Value = (directoryValue.IsLink ? Config.GetValue(inventoryLinkTextColor) : Config.GetValue(inventoryFolderTextColor));
+						item.NormalColor.Value = directoryValue.IsLink ? Config.GetValue(inventoryLinkColor) : Config.GetValue(inventoryFolderColor);
+						item.NormalText.Value = directoryValue.IsLink ? Config.GetValue(inventoryLinkTextColor) : Config.GetValue(inventoryFolderTextColor);
 						item.SelectedColor.Value = Config.GetValue(inventorySelectedColor);
 						item.SelectedText.Value = Config.GetValue(inventorySelectedTextColor);
 					} else {
@@ -302,16 +307,19 @@ namespace CustomPlatformColors
 			[HarmonyPatch("OnItemSelected")]
 			static void Postfix(InventoryBrowser __instance, SyncRef<Button> ____inventoriesButton) 
 			{
-				Msg("____inventoriesButton ");
-				Msg(____inventoriesButton.Target.Slot.Parent.ChildrenCount);
+				if (Config == null || ____inventoriesButton.Target?.Slot?.Parent == null) return;
+				
 				foreach (Slot child in ____inventoriesButton.Target.Slot.Parent.Children) {
 					Button buttonComp = child.GetComponent<Button>();
-					if (buttonComp != null) {
-						buttonComp.ColorDrivers[0].NormalColor.Value = Config.GetValue(inventoryButtonsNormalColor);
-						buttonComp.ColorDrivers[0].HighlightColor.Value = Config.GetValue(inventoryButtonsHighlightedColor);
-						buttonComp.ColorDrivers[0].PressColor.Value = Config.GetValue(inventoryButtonsPressColor);
-						buttonComp.ColorDrivers[0].DisabledColor.Value = Config.GetValue(inventoryButtonsDisabledColor);
-					}
+					if (buttonComp?.ColorDrivers == null || buttonComp.ColorDrivers.Count == 0) continue;
+
+					var driver = buttonComp.ColorDrivers[0];
+					if (driver == null) continue;
+
+					driver.NormalColor.Value = Config.GetValue(inventoryButtonsNormalColor);
+					driver.HighlightColor.Value = Config.GetValue(inventoryButtonsHighlightedColor);
+					driver.PressColor.Value = Config.GetValue(inventoryButtonsPressColor);
+					driver.DisabledColor.Value = Config.GetValue(inventoryButtonsDisabledColor);
 				}
 			}
 		}
