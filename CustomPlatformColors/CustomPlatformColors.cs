@@ -22,7 +22,7 @@ namespace CustomPlatformColors
         public override string Author => "Dexy";
         public override string Version => VERSION_CONSTANT;
         public const string VERSION_CONSTANT = "1.0.1";
-        public override string Link => "https://github.com/Dexy/CustomPlatformColors";
+        public override string Link => "https://github.com/DexyThePuppy/CustomPlatformColors";
 
         //The following
         [AutoRegisterConfigKey]
