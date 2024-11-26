@@ -35,7 +35,7 @@ jobs:
         $attempt = 1
         do {
           Write-Host "Attempt $attempt of $maxAttempts to download Resonite..."
-          Start-Process -FilePath "./steamcmd.exe" -ArgumentList "+@sSteamCmdForcePlatformType windows +force_install_dir ../Resonite +login anonymous +app_license_request 2519830 +app_update 2519830 validate +quit" -Wait -NoNewWindow
+          Start-Process -FilePath "./steamcmd.exe" -ArgumentList "+force_install_dir ../Resonite +@sSteamCmdForcePlatformType windows +login anonymous +app_license_request 2519830 +app_update 2519830 validate +quit" -Wait -NoNewWindow
           $success = Test-Path "../Resonite/Resonite.exe"
           if ($success) { break }
           $attempt++
