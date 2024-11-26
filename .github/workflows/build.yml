@@ -18,6 +18,19 @@ jobs:
       with:
         dotnet-version: '7.0.x'
     
+    - name: Download Resonite
+      shell: pwsh
+      run: |
+        Invoke-WebRequest -Uri "https://clouddelivery.resonite.com/BuildData/Live/Windows/Resonite.zip" -OutFile "Resonite.zip"
+        Expand-Archive -Path "Resonite.zip" -DestinationPath "Resonite"
+        
+    - name: Download ResoniteModLoader
+      shell: pwsh
+      run: |
+        Invoke-WebRequest -Uri "https://github.com/resonite-modding-group/ResoniteModLoader/releases/latest/download/ResoniteModLoader.dll" -OutFile "Resonite/Libraries/ResoniteModLoader.dll"
+        New-Item -ItemType Directory -Force -Path "Resonite/rml_libs"
+        Invoke-WebRequest -Uri "https://github.com/resonite-modding-group/ResoniteModLoader/releases/latest/download/0Harmony.dll" -OutFile "Resonite/rml_libs/0Harmony.dll"
+    
     - name: Restore dependencies
       run: dotnet restore
     
@@ -28,4 +41,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: CustomPlatformColors-DLL
-        path: CustomPlatformColors/bin/Release/net*/CustomPlatformColors.dll 
+        path: CustomPlatformColors/bin/Release/net*/CustomPlatformColors.dll
