@@ -2,7 +2,6 @@ using HarmonyLib;
 using FrooxEngine;
 using Elements.Core;
 using FrooxEngine.UIX;
-using System.Linq;
 
 namespace CustomPlatformColors.Patches
 {
@@ -19,8 +18,45 @@ namespace CustomPlatformColors.Patches
             bool closeButton,
             ref UIBuilder __result)
         {
+            UniLog.Log($"[CustomPlatformColors] SetupPanel called for: {label}");
+            
             if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
+            {
+                UniLog.Log("[CustomPlatformColors] Config is null or disabled");
                 return true;
+            }
+
+            // Check if the root element is owned by the local user
+            if (root?.World == null)
+            {
+                UniLog.Log("[CustomPlatformColors] Root or World is null, skipping patch");
+                return true;
+            }
+
+            root.ReferenceID.ExtractIDs(out var position, out var user);
+            User userByAllocationID = root.World.GetUserByAllocationID(user);
+
+            if (userByAllocationID == null)
+            {
+                UniLog.Log("[CustomPlatformColors] Could not find user by allocation ID, skipping patch");
+                return true;
+            }
+
+            // Filter out users who left and then someone joined with their id
+            if (position < userByAllocationID.AllocationIDStart)
+            {
+                UniLog.Log("[CustomPlatformColors] Element not owned by local user, skipping patch");
+                return true;
+            }
+
+            // Check if the element is owned by local user
+            if (userByAllocationID != root.World.LocalUser)
+            {
+                UniLog.Log("[CustomPlatformColors] Element not owned by local user, skipping patch");
+                return true;
+            }
+
+            UniLog.Log("[CustomPlatformColors] Applying custom colors to panel");
 
             GenericUIContainer genericUiContainer = root.AttachComponent<GenericUIContainer>();
             genericUiContainer.CloseDestroyRoot.Target = root;
@@ -36,7 +72,8 @@ namespace CustomPlatformColors.Patches
 
             // Use custom background color
             colorX bgColor = CustomPlatformColors.Config.GetValue(CustomPlatformColors.neutralDark);
-            ui.Panel(bgColor, sprite, ui.Style.NineSliceSizing, true);
+            UniLog.Log($"[CustomPlatformColors] Setting background color: {bgColor}");
+            var panel = ui.Panel(bgColor, sprite, ui.Style.NineSliceSizing, true);
 
             RectTransform header;
             RectTransform content;
@@ -55,8 +92,9 @@ namespace CustomPlatformColors.Patches
             if (pinButton && !root.World.IsUserspace())
             {
                 colorX pinColor = CustomPlatformColors.Config.GetValue(CustomPlatformColors.subOrange);
-                ui.Button(OfficialAssets.Graphics.Icons.Inspector.Pin, new colorX?(pinColor), colorX.White)
-                    .Slot.AttachComponent<ButtonParentUnderUser>().Root.Target = root;
+                UniLog.Log($"[CustomPlatformColors] Setting pin button color: {pinColor}");
+                var pinBtn = ui.Button(OfficialAssets.Graphics.Icons.Inspector.Pin, new colorX?(pinColor), colorX.White);
+                pinBtn.Slot.AttachComponent<ButtonParentUnderUser>().Root.Target = root;
             }
 
             // Use custom close button colors
@@ -64,8 +102,9 @@ namespace CustomPlatformColors.Patches
             {
                 colorX closeHeroColor = CustomPlatformColors.Config.GetValue(CustomPlatformColors.heroRed);
                 colorX closeSubColor = CustomPlatformColors.Config.GetValue(CustomPlatformColors.subRed);
-                ui.Button(OfficialAssets.Graphics.Icons.Inspector.Close, new colorX?(closeHeroColor), closeSubColor)
-                    .Slot.AttachComponent<ButtonDestroy>().Target.Target = root;
+                UniLog.Log($"[CustomPlatformColors] Setting close button colors - hero: {closeHeroColor}, sub: {closeSubColor}");
+                var closeBtn = ui.Button(OfficialAssets.Graphics.Icons.Inspector.Close, new colorX?(closeHeroColor), closeSubColor);
+                closeBtn.Slot.AttachComponent<ButtonDestroy>().Target.Target = root;
             }
 
             ui.Style.MinWidth = -1f;

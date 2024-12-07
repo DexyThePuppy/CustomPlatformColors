@@ -163,6 +163,20 @@ namespace CustomPlatformColors
                 return;
             }
 
+            // Get the AllocUser
+            palette.Slot.ReferenceID.ExtractIDs(out ulong position, out byte user);
+            FrooxEngine.User allocUser = palette.World.GetUserByAllocationID(user);
+
+            // Don't run if the AllocUser isn't the LocalUser
+            if (allocUser == null || position < allocUser.AllocationIDStart) {
+                palette.ReferenceID.ExtractIDs(out ulong position1, out byte user1);
+                FrooxEngine.User instanceAllocUser = palette.World.GetUserByAllocationID(user1);
+                
+                // Don't run if the AllocUser is null or Invalid, and the Instance AllocUser is Null or invalid or isn't the LocalUser
+                if (instanceAllocUser == null || position1 < instanceAllocUser.AllocationIDStart || instanceAllocUser != palette.LocalUser) return;
+            }
+            else if (allocUser != palette.LocalUser) return;
+
             try
             {
                 // Update Neutral colors
