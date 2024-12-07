@@ -2,56 +2,83 @@ using HarmonyLib;
 using FrooxEngine;
 using Elements.Core;
 using FrooxEngine.UIX;
-using System.Linq;
-using CustomPlatformColors;
 
 namespace CustomPlatformColors.Patches
 {
     [HarmonyPatch(typeof(SlotInspector))]
     public static class SlotInspector_Patch
     {
-        [HarmonyPatch("UpdateText")]
-        [HarmonyPrefix]
-        public static bool UpdateText_Prefix(SlotInspector __instance)
+        [HarmonyPatch("OnAttach")]
+        [HarmonyPostfix]
+        public static void OnAttach_Postfix(SlotInspector __instance)
         {
             if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
-                return true;
+                return;
 
-            var setupRoot = AccessTools.Field(typeof(SlotInspector), "_setupRoot").GetValue(__instance) as Slot;
-            var slotNameText = AccessTools.Field(typeof(SlotInspector), "_slotNameText").GetValue(__instance) as SyncRef<Text>;
-            var selectionReference = AccessTools.Field(typeof(SlotInspector), "_selectionReference").GetValue(__instance) as RelayRef<SyncRef<Slot>>;
-
-            if (setupRoot == null || slotNameText?.Target == null) return false;
-
-            __instance.Slot.OrderOffset = setupRoot.OrderOffset;
-            slotNameText.Target.Content.Value = setupRoot.Name;
-
-            // Default text color from config
-            colorX textColor = CustomPlatformColors.Config.GetValue(CustomPlatformColors.neutralLight);
-
-            // Non-persistent items use orange colors
-            if (!setupRoot.IsPersistent)
+            // Check if the inspector is owned by the local user
+            if (__instance?.Slot?.World == null)
             {
-                textColor = setupRoot.PersistentSelf ? 
-                    CustomPlatformColors.Config.GetValue(CustomPlatformColors.subOrange) : 
-                    CustomPlatformColors.Config.GetValue(CustomPlatformColors.heroOrange);
+                UniLog.Log("[CustomPlatformColors] Inspector, Slot or World is null, skipping patch");
+                return;
             }
 
-            // Selected items use yellow
-            if (selectionReference?.Target?.Target == setupRoot)
+            var slot = __instance.Slot;
+            var world = slot.World;
+
+            // Get the allocating user
+            slot.ReferenceID.ExtractIDs(out var position, out var user);
+            User userByAllocationID = world.GetUserByAllocationID(user);
+
+            if (userByAllocationID == null)
             {
-                textColor = CustomPlatformColors.Config.GetValue(CustomPlatformColors.heroYellow);
+                UniLog.Log("[CustomPlatformColors] Could not find user by allocation ID, skipping patch");
+                return;
             }
 
-            // Inactive items are more transparent
-            if (!setupRoot.IsActive)
+            // Filter out users who left and then someone joined with their id
+            if (position < userByAllocationID.AllocationIDStart)
             {
-                textColor = setupRoot.ActiveSelf ? textColor.SetA(0.5f) : textColor.SetA(0.3f);
+                UniLog.Log("[CustomPlatformColors] Inspector not owned by local user (position check), skipping patch");
+                return;
             }
 
-            slotNameText.Target.Color.Value = textColor;
+            // Check if the element is owned by local user
+            if (userByAllocationID != world.LocalUser)
+            {
+                UniLog.Log("[CustomPlatformColors] Inspector not owned by local user, skipping patch");
+                return;
+            }
 
-            return false;
+            // Find all Image components in children that use the default colors
+            var images = slot.GetComponentsInChildren<Image>();
+            if (images == null)
+            {
+                UniLog.Log("[CustomPlatformColors] No images found to modify");
+                return;
+            }
+
+            foreach (var image in images)
+            {
+                if (image == null) continue;
+
+                var color = image.Tint.Value;
+                
+                // Check if it's using the default cyan color
+                if (color == RadiantUI_Constants.Dark.CYAN)
+                {
+                    image.Tint.Value = CustomPlatformColors.Config.GetValue(CustomPlatformColors.heroCyan);
+                }
+                // Check if it's using the default background color
+                else if (color == RadiantUI_Constants.BG_COLOR)
+                {
+                    image.Tint.Value = CustomPlatformColors.Config.GetValue(CustomPlatformColors.neutralDark);
+                }
+                // Check if it's the panel background (dark blue)
+                else if (color == new colorX(0.067f, 0.082f, 0.114f, 1f))
+                {
+                    image.Tint.Value = CustomPlatformColors.Config.GetValue(CustomPlatformColors.neutralDark).SetA(0.95f);
+                }
+            }
         }
     }
 }
