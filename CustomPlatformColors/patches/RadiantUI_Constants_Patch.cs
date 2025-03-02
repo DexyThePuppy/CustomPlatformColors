@@ -17,7 +17,7 @@ namespace CustomPlatformColors.Patches
         [HarmonyPrefix]
         public static bool GetTintedButton_Prefix(ref colorX __result, colorX tint)
         {
-            UniLog.Log($"[CustomPlatformColors] GetTintedButton called with tint: {tint}");
+           // UniLog.Log($"[CustomPlatformColors] GetTintedButton called with tint: {tint}");
             if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
             {
                 UniLog.Log("[CustomPlatformColors] Config is null or disabled, skipping GetTintedButton patch");
@@ -26,7 +26,7 @@ namespace CustomPlatformColors.Patches
 
             if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.buttonHoverColor, out colorX hoverColor))
             {
-                UniLog.Log($"[CustomPlatformColors] Applying custom hover color: {hoverColor}");
+               // UniLog.Log($"[CustomPlatformColors] Applying custom hover color: {hoverColor}");
                 __result = hoverColor;
                 return false;
             }
@@ -37,7 +37,7 @@ namespace CustomPlatformColors.Patches
         [HarmonyPostfix]
         public static void ButtonColor_Postfix(ref colorX __result)
         {
-            UniLog.Log("[CustomPlatformColors] BUTTON_COLOR getter called");
+           // UniLog.Log("[CustomPlatformColors] BUTTON_COLOR getter called");
             if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
             {
                 UniLog.Log("[CustomPlatformColors] Config is null or disabled, skipping BUTTON_COLOR patch");
@@ -46,7 +46,7 @@ namespace CustomPlatformColors.Patches
 
             if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.buttonNormalColor, out colorX buttonColor))
             {
-                UniLog.Log($"[CustomPlatformColors] Applying custom button color: {buttonColor}");
+               // UniLog.Log($"[CustomPlatformColors] Applying custom button color: {buttonColor}");
                 __result = buttonColor;
             }
         }
@@ -55,7 +55,7 @@ namespace CustomPlatformColors.Patches
         [HarmonyPostfix]
         public static void TextColor_Postfix(ref colorX __result)
         {
-            UniLog.Log("[CustomPlatformColors] TEXT_COLOR getter called");
+           // UniLog.Log("[CustomPlatformColors] TEXT_COLOR getter called");
             if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
             {
                 UniLog.Log("[CustomPlatformColors] Config is null or disabled, skipping TEXT_COLOR patch");
@@ -64,7 +64,7 @@ namespace CustomPlatformColors.Patches
 
             if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.buttonTextColor, out colorX textColor))
             {
-                UniLog.Log($"[CustomPlatformColors] Applying custom text color: {textColor}");
+              //  UniLog.Log($"[CustomPlatformColors] Applying custom text color: {textColor}");
                 __result = textColor;
             }
         }
@@ -73,7 +73,7 @@ namespace CustomPlatformColors.Patches
         [HarmonyPostfix]
         public static void SetupBaseStyle_Postfix(UIBuilder ui)
         {
-            UniLog.Log($"[CustomPlatformColors] SetupBaseStyle called for UI builder: {ui?.Current?.Name ?? "null"}");
+          //  UniLog.Log($"[CustomPlatformColors] SetupBaseStyle called for UI builder: {ui?.Current?.Name ?? "null"}");
             if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
             {
                 UniLog.Log("[CustomPlatformColors] Config is null or disabled, skipping SetupBaseStyle patch");
@@ -83,11 +83,11 @@ namespace CustomPlatformColors.Patches
             // Check if the UI element is owned by the local user
             if (ui?.Current == null || !CheckLocalUserOwnership(ui.Current))
             {
-                UniLog.Log($"[CustomPlatformColors] UI element not owned by local user: {ui?.Current?.Name ?? "null"}");
+             //   UniLog.Log($"[CustomPlatformColors] UI element not owned by local user: {ui?.Current?.Name ?? "null"}");
                 return;
             }
 
-            UniLog.Log("[CustomPlatformColors] Updating all colors in SetupBaseStyle");
+           // UniLog.Log("[CustomPlatformColors] Updating all colors in SetupBaseStyle");
             UpdateAllColors();
         }
 
@@ -95,7 +95,7 @@ namespace CustomPlatformColors.Patches
         [HarmonyPrefix]
         public static void SetupDefaultStyle_Prefix()
         {
-            UniLog.Log("[CustomPlatformColors] SetupDefaultStyle called");
+           // UniLog.Log("[CustomPlatformColors] SetupDefaultStyle called");
             try
             {
                 if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
@@ -176,7 +176,7 @@ namespace CustomPlatformColors.Patches
                     }
                 }
 
-                UniLog.Log("[CustomPlatformColors] Updating colors in SetupDefaultStyle");
+               // UniLog.Log("[CustomPlatformColors] Updating colors in SetupDefaultStyle");
                 UpdateAllColors();
             }
             catch (Exception e)
@@ -187,7 +187,7 @@ namespace CustomPlatformColors.Patches
 
         private static void UpdateAllColors()
         {
-            UniLog.Log("[CustomPlatformColors] UpdateAllColors called");
+           // UniLog.Log("[CustomPlatformColors] UpdateAllColors called");
             if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
             {
                 UniLog.Log("[CustomPlatformColors] Config is null or disabled, skipping UpdateAllColors");
@@ -268,7 +268,7 @@ namespace CustomPlatformColors.Patches
                     }
                 }
 
-                UniLog.Log("[CustomPlatformColors] Starting color updates");
+               // UniLog.Log("[CustomPlatformColors] Starting color updates");
                 var flags = BindingFlags.Public | BindingFlags.Static;
 
                 // Update neutral colors
@@ -329,7 +329,7 @@ namespace CustomPlatformColors.Patches
 
         private static bool CheckLocalUserOwnership(Slot slot)
         {
-            UniLog.Log($"[CustomPlatformColors] Checking ownership for: {slot?.Name ?? "null"}");
+           // UniLog.Log($"[CustomPlatformColors] Checking ownership for: {slot?.Name ?? "null"}");
             if (slot?.World == null)
             {
                 UniLog.Log("[CustomPlatformColors] Slot or World is null");
@@ -340,7 +340,7 @@ namespace CustomPlatformColors.Patches
             bool isInspector = slot.GetComponentInParents<InspectorPanel>() != null || slot.Tag == "Developer";
             if (!isInspector)
             {
-                UniLog.Log("[CustomPlatformColors] Not an inspector element, skipping ownership check");
+              //  UniLog.Log("[CustomPlatformColors] Not an inspector element, skipping ownership check");
                 return true;
             }
 
