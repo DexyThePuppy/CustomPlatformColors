@@ -3,372 +3,224 @@ using FrooxEngine;
 using Elements.Core;
 using FrooxEngine.UIX;
 using CustomPlatformColors;
+using ResoniteModLoader;
 using System;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace CustomPlatformColors.Patches
 {
     [HarmonyPatch]
     public static class ColorReplacer
     {
-        [HarmonyPatch(typeof(RadiantUI_Constants), "GetTintedButton")]
+        private static readonly AsyncLocal<bool> IsLocalUserContext = new AsyncLocal<bool>();
+        private static readonly BindingFlags StaticFlags = BindingFlags.Public | BindingFlags.Static;
+        private static readonly Stack<Dictionary<FieldInfo, object>> _colorBackupStack = new();
+
+        [HarmonyPatch(typeof(RadiantUI_Constants), "SetupBaseStyle")]
         [HarmonyPrefix]
-        public static bool GetTintedButton_Prefix(ref colorX __result, colorX tint)
+        public static void SetupBaseStyle_Prefix(UIBuilder ui)
         {
-           // UniLog.Log($"[CustomPlatformColors] GetTintedButton called with tint: {tint}");
-            if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
-            {
-                UniLog.Log("[CustomPlatformColors] Config is null or disabled, skipping GetTintedButton patch");
-                return true;
-            }
-
-            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.buttonHoverColor, out colorX hoverColor))
-            {
-               // UniLog.Log($"[CustomPlatformColors] Applying custom hover color: {hoverColor}");
-                __result = hoverColor;
-                return false;
-            }
-            return true;
-        }
-
-        [HarmonyPatch(typeof(RadiantUI_Constants), "get_BUTTON_COLOR")]
-        [HarmonyPostfix]
-        public static void ButtonColor_Postfix(ref colorX __result)
-        {
-           // UniLog.Log("[CustomPlatformColors] BUTTON_COLOR getter called");
-            if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
-            {
-                UniLog.Log("[CustomPlatformColors] Config is null or disabled, skipping BUTTON_COLOR patch");
+            if (ui?.Current == null)
                 return;
-            }
 
-            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.buttonNormalColor, out colorX buttonColor))
-            {
-               // UniLog.Log($"[CustomPlatformColors] Applying custom button color: {buttonColor}");
-                __result = buttonColor;
-            }
-        }
+            // Determine ownership context
+            bool isLocal = CheckLocalUserOwnership(ui.Current);
+            IsLocalUserContext.Value = isLocal;
 
-        [HarmonyPatch(typeof(RadiantUI_Constants), "get_TEXT_COLOR")]
-        [HarmonyPostfix]
-        public static void TextColor_Postfix(ref colorX __result)
-        {
-           // UniLog.Log("[CustomPlatformColors] TEXT_COLOR getter called");
-            if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
-            {
-                UniLog.Log("[CustomPlatformColors] Config is null or disabled, skipping TEXT_COLOR patch");
+            if (!ShouldApplyCustomColors())
                 return;
-            }
 
-            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.buttonTextColor, out colorX textColor))
-            {
-              //  UniLog.Log($"[CustomPlatformColors] Applying custom text color: {textColor}");
-                __result = textColor;
-            }
+            // Backup & apply overrides
+            var backup = new Dictionary<FieldInfo, object>();
+            _colorBackupStack.Push(backup);
+            ApplyCustomColors(backup);
         }
 
         [HarmonyPatch(typeof(RadiantUI_Constants), "SetupBaseStyle")]
         [HarmonyPostfix]
         public static void SetupBaseStyle_Postfix(UIBuilder ui)
         {
-          //  UniLog.Log($"[CustomPlatformColors] SetupBaseStyle called for UI builder: {ui?.Current?.Name ?? "null"}");
-            if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
+            if (!ShouldApplyCustomColors())
             {
-                UniLog.Log("[CustomPlatformColors] Config is null or disabled, skipping SetupBaseStyle patch");
+                IsLocalUserContext.Value = false;
                 return;
             }
 
-            // Check if the UI element is owned by the local user
-            if (ui?.Current == null || !CheckLocalUserOwnership(ui.Current))
+            if (_colorBackupStack.Count > 0)
             {
-             //   UniLog.Log($"[CustomPlatformColors] UI element not owned by local user: {ui?.Current?.Name ?? "null"}");
-                return;
+                var backup = _colorBackupStack.Pop();
+                RestoreColors(backup);
             }
 
-           // UniLog.Log("[CustomPlatformColors] Updating all colors in SetupBaseStyle");
-            UpdateAllColors();
+            IsLocalUserContext.Value = false;
         }
 
         [HarmonyPatch(typeof(RadiantUI_Constants), "SetupDefaultStyle")]
         [HarmonyPrefix]
         public static void SetupDefaultStyle_Prefix()
         {
-           // UniLog.Log("[CustomPlatformColors] SetupDefaultStyle called");
+            IsLocalUserContext.Value = IsLocalUserUIContext();
+            if (!ShouldApplyCustomColors())
+                return;
+            var backup = new Dictionary<FieldInfo, object>();
+            _colorBackupStack.Push(backup);
+            ApplyCustomColors(backup);
+        }
+
+        [HarmonyPatch(typeof(RadiantUI_Constants), "SetupDefaultStyle")]
+        [HarmonyPostfix]
+        public static void SetupDefaultStyle_Postfix()
+        {
+            if (!ShouldApplyCustomColors())
+            {
+                IsLocalUserContext.Value = false;
+                return;
+            }
+            if (_colorBackupStack.Count > 0)
+            {
+                var backup = _colorBackupStack.Pop();
+                RestoreColors(backup);
+            }
+            IsLocalUserContext.Value = false;
+        }
+
+        // Helper method to check if custom colors should be applied
+        private static bool ShouldApplyCustomColors()
+        {
+            return CustomPlatformColors.Config != null &&
+                   CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled) &&
+                   CustomPlatformColors.Config.GetValue(CustomPlatformColors.patchRadiantUIConstants) &&
+                   IsLocalUserContext.Value;
+        }
+
+        public static bool IsLocalUserUIContext()
+        {
             try
             {
-                if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
-                {
-                    UniLog.Log("[CustomPlatformColors] Config is null or disabled, skipping SetupDefaultStyle patch");
-                    return;
-                }
+                var world = Engine.Current?.WorldManager?.FocusedWorld;
+                if (world == null)
+                    return false;
 
-                // Check if we're in an inspector context by looking at the current stack trace
+                // Get the current UI context from the call stack
                 var stackTrace = new System.Diagnostics.StackTrace();
-                bool isInspectorContext = false;
-                foreach (var frame in stackTrace.GetFrames())
+                foreach (var frame in stackTrace.GetFrames() ?? Array.Empty<System.Diagnostics.StackFrame>())
                 {
+                    if (frame == null) continue;
+                    
                     var method = frame.GetMethod();
-                    if (method?.DeclaringType != null)
+                    if (method?.DeclaringType == null) continue;
+
+                    // Check if we're in an inspector or developer UI context
+                    if (typeof(InspectorPanel).IsAssignableFrom(method.DeclaringType))
                     {
-                        var type = method.DeclaringType;
-                        if (typeof(InspectorPanel).IsAssignableFrom(type))
-                        {
-                            isInspectorContext = true;
-                            break;
-                        }
+                        var slot = GetSlotFromStackFrame(frame);
+                        if (slot != null)
+                            return CheckLocalUserOwnership(slot);
                     }
                 }
 
-                // If we're in an inspector context, check if it belongs to the local user
-                if (isInspectorContext)
-                {
-                    UniLog.Log("[CustomPlatformColors] Inspector context detected, checking ownership");
-                    var world = Engine.Current.WorldManager.FocusedWorld;
-                    if (world == null)
-                    {
-                        UniLog.Log("[CustomPlatformColors] World is null, skipping color updates");
-                        return;
-                    }
-
-                    // Get the current inspector from the stack trace
-                    InspectorPanel? currentInspector = null;
-                    foreach (var frame in stackTrace.GetFrames())
-                    {
-                        var method = frame.GetMethod();
-                        if (method?.DeclaringType != null && typeof(InspectorPanel).IsAssignableFrom(method.DeclaringType))
-                        {
-                            // Try to get the inspector instance from the stack frame
-                            try
-                            {
-                                if (frame.GetMethod()?.GetParameters().FirstOrDefault()?.Name == "__instance")
-                                {
-                                    var instance = frame.GetMethod()?.Invoke(null, new object[] { frame });
-                                    if (instance is InspectorPanel inspector)
-                                    {
-                                        currentInspector = inspector;
-                                        break;
-                                    }
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                UniLog.Warning($"[CustomPlatformColors] Error getting inspector instance: {ex.Message}");
-                            }
-                        }
-                    }
-
-                    if (currentInspector?.Slot == null)
-                    {
-                        UniLog.Log("[CustomPlatformColors] Could not find current inspector, skipping color updates");
-                        return;
-                    }
-
-                    // Check if the inspector belongs to the local user
-                    currentInspector.Slot.ReferenceID.ExtractIDs(out var position, out var user);
-                    User userByAllocationID = world.GetUserByAllocationID(user);
-
-                    if (userByAllocationID == null || position < userByAllocationID.AllocationIDStart || userByAllocationID != world.LocalUser)
-                    {
-                        UniLog.Log("[CustomPlatformColors] Inspector not owned by local user, skipping color updates");
-                        return;
-                    }
-                }
-
-               // UniLog.Log("[CustomPlatformColors] Updating colors in SetupDefaultStyle");
-                UpdateAllColors();
+                // If we can't determine the context, assume it's safe to apply colors
+                return true;
             }
             catch (Exception e)
             {
-                UniLog.Error($"Error updating RadiantUI colors in SetupDefaultStyle: {e}");
+                UniLog.Error($"Error in IsLocalUserUIContext: {e}");
+                return false;
             }
         }
 
-        private static void UpdateAllColors()
+        private static Slot? GetSlotFromStackFrame(System.Diagnostics.StackFrame frame)
         {
-           // UniLog.Log("[CustomPlatformColors] UpdateAllColors called");
-            if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
-            {
-                UniLog.Log("[CustomPlatformColors] Config is null or disabled, skipping UpdateAllColors");
-                return;
-            }
-
+            if (frame == null) return null;
+            
             try
             {
-                // Check if we're in an inspector context by looking at the current stack trace
-                var stackTrace = new System.Diagnostics.StackTrace();
-                bool isInspectorContext = false;
-                foreach (var frame in stackTrace.GetFrames())
+                var method = frame.GetMethod();
+                if (method?.GetParameters().FirstOrDefault()?.Name == "__instance")
                 {
-                    var method = frame.GetMethod();
-                    if (method?.DeclaringType != null)
-                    {
-                        var type = method.DeclaringType;
-                        if (typeof(InspectorPanel).IsAssignableFrom(type))
-                        {
-                            isInspectorContext = true;
-                            break;
-                        }
-                    }
+                    var instance = method.Invoke(null, new object[] { frame });
+                    if (instance is InspectorPanel inspector)
+                        return inspector.Slot;
                 }
-
-                // If we're in an inspector context, check if it belongs to the local user
-                if (isInspectorContext)
-                {
-                    UniLog.Log("[CustomPlatformColors] Inspector context detected, checking ownership");
-                    var world = Engine.Current.WorldManager.FocusedWorld;
-                    if (world == null)
-                    {
-                        UniLog.Log("[CustomPlatformColors] World is null, skipping color updates");
-                        return;
-                    }
-
-                    // Get the current inspector from the stack trace
-                    InspectorPanel? currentInspector = null;
-                    foreach (var frame in stackTrace.GetFrames())
-                    {
-                        var method = frame.GetMethod();
-                        if (method?.DeclaringType != null && typeof(InspectorPanel).IsAssignableFrom(method.DeclaringType))
-                        {
-                            // Try to get the inspector instance from the stack frame
-                            try
-                            {
-                                if (frame.GetMethod()?.GetParameters().FirstOrDefault()?.Name == "__instance")
-                                {
-                                    var instance = frame.GetMethod()?.Invoke(null, new object[] { frame });
-                                    if (instance is InspectorPanel inspector)
-                                    {
-                                        currentInspector = inspector;
-                                        break;
-                                    }
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                UniLog.Warning($"[CustomPlatformColors] Error getting inspector instance: {ex.Message}");
-                            }
-                        }
-                    }
-
-                    if (currentInspector?.Slot == null)
-                    {
-                        UniLog.Log("[CustomPlatformColors] Could not find current inspector, skipping color updates");
-                        return;
-                    }
-
-                    // Check if the inspector belongs to the local user
-                    currentInspector.Slot.ReferenceID.ExtractIDs(out var position, out var user);
-                    User userByAllocationID = world.GetUserByAllocationID(user);
-
-                    if (userByAllocationID == null || position < userByAllocationID.AllocationIDStart || userByAllocationID != world.LocalUser)
-                    {
-                        UniLog.Log("[CustomPlatformColors] Inspector not owned by local user, skipping color updates");
-                        return;
-                    }
-                }
-
-               // UniLog.Log("[CustomPlatformColors] Starting color updates");
-                var flags = BindingFlags.Public | BindingFlags.Static;
-
-                // Update neutral colors
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.neutralDark, out colorX darkColor))
-                    typeof(RadiantUI_Constants.Neutrals).GetField("DARK", flags).SetValue(null, darkColor);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.neutralMid, out colorX midColor))
-                    typeof(RadiantUI_Constants.Neutrals).GetField("MID", flags).SetValue(null, midColor);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.neutralLight, out colorX lightColor))
-                    typeof(RadiantUI_Constants.Neutrals).GetField("LIGHT", flags).SetValue(null, lightColor);
-
-                // Update hero colors
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.heroYellow, out colorX heroYellow))
-                    typeof(RadiantUI_Constants.Hero).GetField("YELLOW", flags).SetValue(null, heroYellow);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.heroGreen, out colorX heroGreen))
-                    typeof(RadiantUI_Constants.Hero).GetField("GREEN", flags).SetValue(null, heroGreen);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.heroRed, out colorX heroRed))
-                    typeof(RadiantUI_Constants.Hero).GetField("RED", flags).SetValue(null, heroRed);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.heroPurple, out colorX heroPurple))
-                    typeof(RadiantUI_Constants.Hero).GetField("PURPLE", flags).SetValue(null, heroPurple);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.heroCyan, out colorX heroCyan))
-                    typeof(RadiantUI_Constants.Hero).GetField("CYAN", flags).SetValue(null, heroCyan);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.heroOrange, out colorX heroOrange))
-                    typeof(RadiantUI_Constants.Hero).GetField("ORANGE", flags).SetValue(null, heroOrange);
-
-                // Update sub colors
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.subYellow, out colorX subYellow))
-                    typeof(RadiantUI_Constants.Sub).GetField("YELLOW", flags).SetValue(null, subYellow);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.subGreen, out colorX subGreen))
-                    typeof(RadiantUI_Constants.Sub).GetField("GREEN", flags).SetValue(null, subGreen);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.subRed, out colorX subRed))
-                    typeof(RadiantUI_Constants.Sub).GetField("RED", flags).SetValue(null, subRed);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.subPurple, out colorX subPurple))
-                    typeof(RadiantUI_Constants.Sub).GetField("PURPLE", flags).SetValue(null, subPurple);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.subCyan, out colorX subCyan))
-                    typeof(RadiantUI_Constants.Sub).GetField("CYAN", flags).SetValue(null, subCyan);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.subOrange, out colorX subOrange))
-                    typeof(RadiantUI_Constants.Sub).GetField("ORANGE", flags).SetValue(null, subOrange);
-
-                // Update dark colors
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.darkYellow, out colorX darkYellow))
-                    typeof(RadiantUI_Constants.Dark).GetField("YELLOW", flags).SetValue(null, darkYellow);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.darkGreen, out colorX darkGreen))
-                    typeof(RadiantUI_Constants.Dark).GetField("GREEN", flags).SetValue(null, darkGreen);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.darkRed, out colorX darkRed))
-                    typeof(RadiantUI_Constants.Dark).GetField("RED", flags).SetValue(null, darkRed);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.darkPurple, out colorX darkPurple))
-                    typeof(RadiantUI_Constants.Dark).GetField("PURPLE", flags).SetValue(null, darkPurple);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.darkCyan, out colorX darkCyan))
-                    typeof(RadiantUI_Constants.Dark).GetField("CYAN", flags).SetValue(null, darkCyan);
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.darkOrange, out colorX darkOrange))
-                    typeof(RadiantUI_Constants.Dark).GetField("ORANGE", flags).SetValue(null, darkOrange);
             }
-            catch (Exception e)
-            {
-                UniLog.Error($"Error updating RadiantUI colors in UpdateAllColors: {e}");
-            }
+            catch (Exception) { /* Ignore errors in reflection */ }
+            return null;
         }
 
         private static bool CheckLocalUserOwnership(Slot slot)
         {
-           // UniLog.Log($"[CustomPlatformColors] Checking ownership for: {slot?.Name ?? "null"}");
-            if (slot?.World == null)
-            {
-                UniLog.Log("[CustomPlatformColors] Slot or World is null");
-                return true;
-            }
-
-            // Check if this is an inspector element
-            bool isInspector = slot.GetComponentInParents<InspectorPanel>() != null || slot.Tag == "Developer";
-            if (!isInspector)
-            {
-              //  UniLog.Log("[CustomPlatformColors] Not an inspector element, skipping ownership check");
-                return true;
-            }
-
-            slot.ReferenceID.ExtractIDs(out var position, out var user);
-            User userByAllocationID = slot.World.GetUserByAllocationID(user);
-
-            if (userByAllocationID == null)
-            {
-                UniLog.Log("[CustomPlatformColors] Could not find user by allocation ID");
-                return true;
-            }
-
-            // Filter out users who left and then someone joined with their id
-            if (position < userByAllocationID.AllocationIDStart)
-            {
-                UniLog.Log("[CustomPlatformColors] Element not owned by local user (position check)");
+            if (slot == null)
                 return false;
-            }
 
-            // Check if the element is owned by local user
-            if (userByAllocationID != slot.World.LocalUser)
-            {
-                UniLog.Log("[CustomPlatformColors] Element not owned by local user");
+            // Fast flag for local-only elements (unsynced)
+            if (slot.IsLocalElement)
+                return true;
+
+            if (slot.World == null)
                 return false;
+
+            // Compare allocation user byte with the local user
+            slot.ReferenceID.ExtractIDs(out var position, out byte userByte);
+            User? owner = slot.World.GetUserByAllocationID(userByte);
+            if (owner == null)
+                return false;
+
+            // Ensure element belongs to the local user and the position lies within their allocation range
+            return owner == slot.World.LocalUser && position >= owner.AllocationIDStart;
+        }
+
+        private static void ApplyCustomColors(Dictionary<FieldInfo, object> backup)
+        {
+            if (CustomPlatformColors.Config == null)
+                return;
+
+            void OverrideColor(System.Type type, string fieldName, ModConfigurationKey<colorX> cfgKey)
+            {
+                if (!CustomPlatformColors.Config.TryGetValue(cfgKey, out colorX newCol))
+                    return;
+                FieldInfo fi = type.GetField(fieldName, StaticFlags);
+                if (fi == null)
+                    return;
+                backup[fi] = fi.GetValue(null);
+                fi.SetValue(null, newCol);
             }
 
-            UniLog.Log("[CustomPlatformColors] Element is owned by local user");
-            return true;
+            // Neutrals
+            OverrideColor(typeof(RadiantUI_Constants.Neutrals), "DARK", CustomPlatformColors.neutralDark);
+            OverrideColor(typeof(RadiantUI_Constants.Neutrals), "MID", CustomPlatformColors.neutralMid);
+            OverrideColor(typeof(RadiantUI_Constants.Neutrals), "LIGHT", CustomPlatformColors.neutralLight);
+            // Hero
+            OverrideColor(typeof(RadiantUI_Constants.Hero), "YELLOW", CustomPlatformColors.heroYellow);
+            OverrideColor(typeof(RadiantUI_Constants.Hero), "GREEN", CustomPlatformColors.heroGreen);
+            OverrideColor(typeof(RadiantUI_Constants.Hero), "RED", CustomPlatformColors.heroRed);
+            OverrideColor(typeof(RadiantUI_Constants.Hero), "PURPLE", CustomPlatformColors.heroPurple);
+            OverrideColor(typeof(RadiantUI_Constants.Hero), "CYAN", CustomPlatformColors.heroCyan);
+            OverrideColor(typeof(RadiantUI_Constants.Hero), "ORANGE", CustomPlatformColors.heroOrange);
+            // Sub
+            OverrideColor(typeof(RadiantUI_Constants.Sub), "YELLOW", CustomPlatformColors.subYellow);
+            OverrideColor(typeof(RadiantUI_Constants.Sub), "GREEN", CustomPlatformColors.subGreen);
+            OverrideColor(typeof(RadiantUI_Constants.Sub), "RED", CustomPlatformColors.subRed);
+            OverrideColor(typeof(RadiantUI_Constants.Sub), "PURPLE", CustomPlatformColors.subPurple);
+            OverrideColor(typeof(RadiantUI_Constants.Sub), "CYAN", CustomPlatformColors.subCyan);
+            OverrideColor(typeof(RadiantUI_Constants.Sub), "ORANGE", CustomPlatformColors.subOrange);
+            // Dark
+            OverrideColor(typeof(RadiantUI_Constants.Dark), "YELLOW", CustomPlatformColors.darkYellow);
+            OverrideColor(typeof(RadiantUI_Constants.Dark), "GREEN", CustomPlatformColors.darkGreen);
+            OverrideColor(typeof(RadiantUI_Constants.Dark), "RED", CustomPlatformColors.darkRed);
+            OverrideColor(typeof(RadiantUI_Constants.Dark), "PURPLE", CustomPlatformColors.darkPurple);
+            OverrideColor(typeof(RadiantUI_Constants.Dark), "CYAN", CustomPlatformColors.darkCyan);
+            OverrideColor(typeof(RadiantUI_Constants.Dark), "ORANGE", CustomPlatformColors.darkOrange);
+        }
+
+        private static void RestoreColors(Dictionary<FieldInfo, object> backup)
+        {
+            foreach (var kvp in backup)
+            {
+                kvp.Key.SetValue(null, kvp.Value);
+            }
         }
     }
 }

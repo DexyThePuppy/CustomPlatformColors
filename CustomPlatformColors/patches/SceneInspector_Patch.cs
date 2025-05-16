@@ -13,7 +13,8 @@ namespace CustomPlatformColors.Patches
         [HarmonyPostfix]
         public static void OnAttach_Postfix(SceneInspector __instance)
         {
-            if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
+            if (!CustomPlatformColors.ShouldApplyPatch() || 
+                !CustomPlatformColors.Config.GetValue(CustomPlatformColors.patchSceneInspector))
                 return;
 
             // Check if the inspector is owned by the local user
@@ -70,3 +71,4 @@ namespace CustomPlatformColors.Patches
         }
     }
 }
+

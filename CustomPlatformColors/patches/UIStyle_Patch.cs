@@ -13,7 +13,9 @@ namespace CustomPlatformColors.Patches
         [HarmonyPostfix]
         public static void Constructor_Postfix(UIStyle __instance)
         {
-            if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled)) 
+            if (CustomPlatformColors.Config == null || 
+                !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled) ||
+                !CustomPlatformColors.Config.GetValue(CustomPlatformColors.patchUIStyle)) 
                 return;
 
             // Update text colors

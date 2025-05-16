@@ -20,9 +20,10 @@ namespace CustomPlatformColors.Patches
         {
             UniLog.Log($"[CustomPlatformColors] SetupPanel called for: {label}");
             
-            if (CustomPlatformColors.Config == null || !CustomPlatformColors.Config.GetValue(CustomPlatformColors.enabled))
+            if (!CustomPlatformColors.ShouldApplyPatch() ||
+                !CustomPlatformColors.Config.GetValue(CustomPlatformColors.patchRadiantUIPanel))
             {
-                UniLog.Log("[CustomPlatformColors] Config is null or disabled");
+                UniLog.Log("[CustomPlatformColors] Config is null or disabled or RadiantUI_Panel patching disabled");
                 return true;
             }
 
@@ -118,3 +119,4 @@ namespace CustomPlatformColors.Patches
         }
     }
 }
+
