@@ -58,79 +58,6 @@ namespace CustomPlatformColors.Patches
             }
         }
 
-        // Patch the OnAttach method to apply custom accent colors immediately
-        [HarmonyPatch("OnAttach")]
-        [HarmonyPostfix]
-        public static void OnAttach_Postfix(RadiantDashScreen __instance)
-        {
-            try
-            {
-                if (!CustomPlatformColors.ShouldApplyPatch() || 
-                    !CustomPlatformColors.Config.GetValue(CustomPlatformColors.patchRadiantDashScreen))
-                    return;
-
-                // Apply custom color based on screen type
-                string screenType = __instance.GetType().Name;
-                
-                // GridContainerScreen with HomeScreenInitializer
-                if (__instance is GridContainerScreen gridScreen && gridScreen.HasPreset(typeof(HomeScreenInitializer)))
-                {
-                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashHomeScreenColor, out colorX homeColor))
-                    {
-                        __instance.ActiveColor.Value = new colorX?(homeColor);
-                    }
-                }
-                else if (__instance is GridContainerScreen worldsScreen && worldsScreen.HasPreset(typeof(WorldsScreenInitializer)))
-                {
-                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashWorldsScreenColor, out colorX worldsColor))
-                    {
-                        __instance.ActiveColor.Value = new colorX?(worldsColor);
-                    }
-                }
-                else if (__instance is GridContainerScreen settingsScreen && settingsScreen.HasPreset(typeof(SettingsScreenInitializer)))
-                {
-                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashSettingsScreenColor, out colorX settingsColor))
-                    {
-                        __instance.ActiveColor.Value = new colorX?(settingsColor);
-                    }
-                }
-                else
-                {
-                    switch (screenType)
-                    {
-                        case "InventoryScreen":
-                        case "LegacyRadiantScreenWrapper`1":
-                            // Check for inventory wrapper
-                            if (__instance.Label.Value != null && __instance.Label.Value.Contains("Inventory"))
-                            {
-                                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashInventoryScreenColor, out colorX inventoryColor))
-                                    __instance.ActiveColor.Value = new colorX?(inventoryColor);
-                            }
-                            // Check for contacts wrapper
-                            else if (__instance.Label.Value != null && __instance.Label.Value.Contains("Contacts"))
-                            {
-                                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashContactsScreenColor, out colorX contactsColor))
-                                    __instance.ActiveColor.Value = new colorX?(contactsColor);
-                            }
-                            break;
-                        case "ExitScreen":
-                            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashExitScreenColor, out colorX exitColor))
-                                __instance.ActiveColor.Value = new colorX?(exitColor);
-                            break;
-                        default:
-                            // Apply generic screen color for other screen types
-                            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashScreenColor, out colorX genericColor))
-                                __instance.ActiveColor.Value = new colorX?(genericColor);
-                            break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                UniLog.Error($"[CustomPlatformColors] Error in RadiantDashScreen OnAttach_Postfix: {ex.Message}");
-            }
-        }
-
         // Helper method to check if custom colors should be applied
         private static bool ShouldApplyCustomColors()
         {
@@ -175,7 +102,7 @@ namespace CustomPlatformColors.Patches
                     }
                 }
                 
-                // Let the original method run but apply our color override
+                // Let our implementation run but with color override
                 Uri backgroundTexture = __instance.Engine.InUniverse ? null : RadiantDashScreen.BackgroundTexture;
                 if (backgroundTexture != null)
                 {
@@ -217,7 +144,7 @@ namespace CustomPlatformColors.Patches
             }
         }
         
-        // Also patch the UIBuilder overload of BuildBackground
+        // Also patch the UIBuilder overload of BuildBackground to ensure consistent behavior
         [HarmonyPatch("BuildBackground", new Type[] { typeof(UIBuilder), typeof(bool) })]
         [HarmonyPrefix]
         public static bool BuildBackground_UIBuilder_Prefix(RadiantDashScreen __instance, UIBuilder ui, bool nest)
