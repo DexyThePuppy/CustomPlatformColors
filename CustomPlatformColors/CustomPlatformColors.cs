@@ -89,20 +89,18 @@ namespace CustomPlatformColors
         // UI Button Colors
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<dummy> spacerUI = new("spacerUI", "--- UI Button Colors ---");
-//        [AutoRegisterConfigKey]
-//        public static readonly ModConfigurationKey<bool> patchRadiantUIConstants = new("patchRadiantUIConstants", "Patch RadiantUI constants", () => true);
-//        [AutoRegisterConfigKey]
-//        public static readonly ModConfigurationKey<bool> patchUIStyle = new("patchUIStyle", "Patch UI style", () => true);
-//        [AutoRegisterConfigKey]
-//        public static readonly ModConfigurationKey<bool> patchUIButtonColors = new("patchUIButtonColors", "Patch generic UIX buttons", () => true);
-//        [AutoRegisterConfigKey]
-//        public static readonly ModConfigurationKey<bool> patchRadiantUIPanel = new("patchRadiantUIPanel", "Patch RadiantUI panels", () => true);
-//        [AutoRegisterConfigKey]
+        [AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<colorX> browserBackgroundColor = new("browserBackgroundColor", "Browser background color", () => RadiantUI_Constants.BG_COLOR);
+        [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<colorX> buttonTextColor = new("buttonTextColor", "Button text color", () => RadiantUI_Constants.TEXT_COLOR);
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<colorX> buttonNormalColor = new("buttonNormalColor", "Button normal color", () => RadiantUI_Constants.BUTTON_COLOR);
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<colorX> buttonHoverColor = new("buttonHoverColor", "Button hover color", () => RadiantUI_Constants.GetTintedButton(RadiantUI_Constants.BUTTON_COLOR));
+		[AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<colorX> buttonPressColor = new("buttonPressColor", "Button press color", () => RadiantUI_Constants.GetTintedButton(RadiantUI_Constants.BUTTON_COLOR));
+		[AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<colorX> buttonDisabledColor = new("buttonDisabledColor", "Button disabled color", () => RadiantUI_Constants.BUTTON_DISABLED_COLOR);
 
         // Dashboard Colors
         [AutoRegisterConfigKey]
@@ -119,6 +117,8 @@ namespace CustomPlatformColors
         public static readonly ModConfigurationKey<colorX> dashAccentColor = new("dashAccentColor", "Dashboard accent color", () => new colorX(0.5f, 0.5f, 1.0f, 1.0f));
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<colorX> dashBorderColor = new("dashBorderColor", "Dashboard border color", () => colorX.White * 1.5f);
+        [AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<bool> dashTransparentBackground = new("dashTransparentBackground", "Use transparent dashboard background", () => false);
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<colorX> dashBackgroundColor = new("dashBackgroundColor", "Dashboard background color", () => UserspaceRadiantDash.DEFAULT_BACKGROUND);
         [AutoRegisterConfigKey]
@@ -186,15 +186,6 @@ namespace CustomPlatformColors
 		public static readonly ModConfigurationKey<colorX> inventoryLinkTextColor = new("inventoryLinkTextColor", "", () => RadiantUI_Constants.Hero.CYAN);
 		[AutoRegisterConfigKey] 
 		public static readonly ModConfigurationKey<colorX> inventoryFavouriteColor = new("inventoryFavouriteColor", "", () => RadiantUI_Constants.Sub.PURPLE);
-		// This is hacky don't ever hard code these values if you can avoid it but for the sake of customisation I will leave it
-		[AutoRegisterConfigKey] 
-		public static readonly ModConfigurationKey<colorX> inventoryButtonsNormalColor = new("inventoryButtonsNormalColor", "", () => RadiantUI_Constants.Neutrals.MID);
-		[AutoRegisterConfigKey] 
-		public static readonly ModConfigurationKey<colorX> inventoryButtonsHighlightedColor = new("inventoryButtonsHighlightedColor", "", () => new colorX(0.37f, 0.41f, 0.46f, 1.0f, ColorProfile.sRGB));
-		[AutoRegisterConfigKey] 
-		public static readonly ModConfigurationKey<colorX> inventoryButtonsPressColor = new("inventoryButtonsPressColor", "", () => new colorX(0.43f, 0.54f, 0.71f, 1.0f, ColorProfile.sRGB));
-		[AutoRegisterConfigKey] 
-		public static readonly ModConfigurationKey<colorX> inventoryButtonsDisabledColor = new("inventoryButtonsDisabledColor", "", () => RadiantUI_Constants.Neutrals.DARK);
 
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<Uri> customDashBackgroundTexture = new("customDashBackgroundTexture", "Custom dashboard background texture URL", () => null);
@@ -407,26 +398,6 @@ namespace CustomPlatformColors
 						item.NormalColor.Value = Config.GetValue(inventoryDeselectedColor);
 						item.SelectedColor.Value = Config.GetValue(inventoryDeselectedColor);
 					}
-				}
-			}
-
-			
-			[HarmonyPatch("OnItemSelected")]
-			static void Postfix(InventoryBrowser __instance, SyncRef<Button> ____inventoriesButton) 
-			{
-				if (Config == null || ____inventoriesButton.Target?.Slot?.Parent == null) return;
-				
-				foreach (Slot child in ____inventoriesButton.Target.Slot.Parent.Children) {
-					Button buttonComp = child.GetComponent<Button>();
-					if (buttonComp?.ColorDrivers == null || buttonComp.ColorDrivers.Count == 0) continue;
-
-					var driver = buttonComp.ColorDrivers[0];
-					if (driver == null) continue;
-
-					driver.NormalColor.Value = Config.GetValue(inventoryButtonsNormalColor);
-					driver.HighlightColor.Value = Config.GetValue(inventoryButtonsHighlightedColor);
-					driver.PressColor.Value = Config.GetValue(inventoryButtonsPressColor);
-					driver.DisabledColor.Value = Config.GetValue(inventoryButtonsDisabledColor);
 				}
 			}
 		}
