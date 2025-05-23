@@ -23,6 +23,8 @@ CustomPlatformColors
 
 **This mod primarily focuses on local user interface elements.** All color customizations are **client-side only** and will only be visible to you. Other users will not see your custom colors, and any UI elements outside of your local user interface (such as world objects, other users' content, or shared interface elements) remain unchanged.
 
+**For elements outside of local user space:** This mod applies a **local-only override** to the `<PlatformColorPalette>` Component for any elements that use it. This override is **only local** - other users will still see the default platform colors even if those elements use the platform color palette.
+
 ## 🦴 Features
 
 - Customize all platform UI colors
