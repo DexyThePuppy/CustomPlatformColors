@@ -4,6 +4,7 @@ CustomPlatformColors
 
 ## 🖼️ Screenshots
 
+### Dashboard & Main Areas
 | Home | UIX | Settings |
 |:-------------:|:-------------:|:-------------:|
 | <img src="CustomPlatformColors/Images/Home.png" alt="Home dashboard with custom colors" width="300"/> | <img src="CustomPlatformColors/Images/UIX.png" alt="UIX interface with custom colors" width="300"/> | <img src="CustomPlatformColors/Images/Settings.png" alt="Settings panel with custom colors" width="300"/> |
@@ -17,6 +18,10 @@ CustomPlatformColors
 | Contacts | Session |
 |:-------------:|:-------------:|
 | <img src="CustomPlatformColors/Images/Contacts.png" alt="Contacts interface with custom colors" width="300"/> | <img src="CustomPlatformColors/Images/Session.png" alt="Session interface with custom colors" width="300"/> |
+
+## ⚠️ Important Notice
+
+**This mod primarily focuses on local user interface elements.** All color customizations are **client-side only** and will only be visible to you. Other users will not see your custom colors, and any UI elements outside of your local user interface (such as world objects, other users' content, or shared interface elements) remain unchanged.
 
 ## 🦴 Features
 
