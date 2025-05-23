@@ -132,23 +132,7 @@ namespace CustomPlatformColors
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<colorX> dashButtonTextColor = new("dashButtonTextColor", "Dashboard button text color", () => colorX.White);
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> dashScreenColor = new("dashScreenColor", "Dashboard generic screen color", () => new colorX(0.3f, 0.6f, 1.0f));
-        
-        // Dashboard Specific Screen Colors
-		[AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<dummy> spacerDashSpecific = new("spacerDashSpecific", "--- Dashboard Specific Screen Colors ---");
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> dashHomeScreenColor = new("dashHomeScreenColor", "Home screen color", () => new colorX(0.0f, 0.8f, 0.2f));
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> dashWorldsScreenColor = new("dashWorldsScreenColor", "Worlds screen color", () => new colorX(0.2f, 0.6f, 1.0f));
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> dashInventoryScreenColor = new("dashInventoryScreenColor", "Inventory screen color", () => new colorX(1.0f, 0.6f, 0.0f));
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> dashContactsScreenColor = new("dashContactsScreenColor", "Contacts screen color", () => new colorX(0.8f, 0.1f, 0.8f));
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> dashSettingsScreenColor = new("dashSettingsScreenColor", "Settings screen color", () => new colorX(0.6f, 0.6f, 0.6f));
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> dashExitScreenColor = new("dashExitScreenColor", "Exit screen color", () => new colorX(1.0f, 0.2f, 0.2f));
+        public static readonly ModConfigurationKey<colorX> dashScreenColor = new("dashScreenColor", "Dashboard screen color", () => new colorX(0.3f, 0.6f, 1.0f));
         
         // World Preset Colors
         [AutoRegisterConfigKey]
@@ -226,9 +210,14 @@ namespace CustomPlatformColors
             harmony.PatchAll();
 		}
 
-		[HarmonyPatch(typeof(PlatformColorPalette), "OnStart")]
+		[HarmonyPatch]
         class PlatformColorPalette_OnStart_Patch
         {
+            static MethodBase TargetMethod()
+            {
+                return typeof(PlatformColorPalette).GetMethod("OnStart", BindingFlags.NonPublic | BindingFlags.Instance);
+            }
+
             static void Postfix(PlatformColorPalette __instance)
             {
                 if (Instance != null)

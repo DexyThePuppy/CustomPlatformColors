@@ -18,44 +18,9 @@ namespace CustomPlatformColors.Patches
             if (!ShouldApplyCustomColors() || CustomPlatformColors.Config == null || __instance == null)
                 return;
 
-            // Get the screen type name to check for specific screen colors
-            string screenType = __instance.GetType().Name ?? "";
-            if (string.IsNullOrEmpty(screenType))
-                return;
-
-            // Apply specific color for each screen type if configured
-            switch (screenType)
-            {
-                case "HomeScreen":
-                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashHomeScreenColor, out colorX homeColor))
-                        __result = homeColor;
-                    break;
-                case "WorldsScreen":
-                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashWorldsScreenColor, out colorX worldsColor))
-                        __result = worldsColor;
-                    break;
-                case "InventoryScreen":
-                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashInventoryScreenColor, out colorX inventoryColor))
-                        __result = inventoryColor;
-                    break;
-                case "ContactsScreen":
-                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashContactsScreenColor, out colorX contactsColor))
-                        __result = contactsColor;
-                    break;
-                case "SettingsScreen":
-                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashSettingsScreenColor, out colorX settingsColor))
-                        __result = settingsColor;
-                    break;
-                case "ExitScreen":
-                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashExitScreenColor, out colorX exitColor))
-                        __result = exitColor;
-                    break;
-                default:
-                    // Apply generic screen color for other screen types
-                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashScreenColor, out colorX genericColor))
-                        __result = genericColor;
-                    break;
-            }
+            // Use single color for all screen types
+            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashScreenColor, out colorX screenColor))
+                __result = screenColor;
         }
 
         // Helper method to check if custom colors should be applied
