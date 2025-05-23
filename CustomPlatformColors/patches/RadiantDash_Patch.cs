@@ -58,7 +58,7 @@ namespace CustomPlatformColors.Patches
                         }
                     }
 
-                    // Delay TopRoot patching until engine is ready and structure is built
+                    // Delay comprehensive patching until engine is ready and structure is built
                     __instance.StartTask(async () =>
                     {
                         // Wait for engine to be ready
@@ -70,16 +70,17 @@ namespace CustomPlatformColors.Patches
                         // Wait a bit more for UI structure to be fully built
                         await Task.Delay(500);
                         
-                        // Now try to patch TopRoot on the main thread
+                        // Now try to patch everything on the main thread
                         __instance.RunSynchronously(() =>
                         {
                             try
                             {
                                 PatchTopRootBackground(__instance, renderSlot);
+                                PatchGridContainerScreens(__instance);
                             }
                             catch (Exception ex)
                             {
-                                ResoniteMod.Error($"[CustomPlatformColors] Error patching TopRoot: {ex.Message}");
+                                ResoniteMod.Error($"[CustomPlatformColors] Error patching RadiantDash backgrounds: {ex.Message}");
                             }
                         });
                     });
@@ -113,7 +114,104 @@ namespace CustomPlatformColors.Patches
             }
         }
 
-        // Patch OnChanges to handle UV_RectMaterial settings
+        /// <summary>
+        /// Patches all GridContainerScreen backgrounds from the RadiantDash root level
+        /// </summary>
+        private static void PatchGridContainerScreens(RadiantDash instance)
+        {
+            try
+            {
+                // Always patch GridContainerScreen backgrounds when CustomPlatformColors is enabled
+                // Find all GridContainerScreen components in the dash
+                var gridScreens = instance.Slot.GetComponentsInChildren<GridContainerScreen>();
+                foreach (var screen in gridScreens)
+                {
+                    ApplyGridContainerBackgroundCustomization(screen);
+                }
+            }
+            catch (Exception ex)
+            {
+                UniLog.Error($"[CustomPlatformColors] Error patching GridContainerScreens: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Customizes the background for GridContainerScreen from RadiantDash level
+        /// </summary>
+        private static void ApplyGridContainerBackgroundCustomization(GridContainerScreen screen)
+        {
+            try
+            {
+                if (screen == null || screen.GridContainer == null || screen.GridContainer.BackgroundRoot == null)
+                    return;
+
+                Slot backgroundSlot = screen.GridContainer.BackgroundRoot.Slot;
+
+                // Check for existing TiledRawImage component (pattern background)
+                TiledRawImage tiledImage = backgroundSlot.GetComponent<TiledRawImage>();
+                if (tiledImage != null)
+                {
+                    // Apply custom background color
+                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashBackgroundColor, out colorX bgColor))
+                    {
+                        tiledImage.Tint.Value = bgColor;
+                    }
+
+                    // Apply custom texture if enabled
+                    if (CustomPlatformColors.Config.GetValue(CustomPlatformColors.useCustomDashBackground))
+                    {
+                        Uri customTexture = CustomPlatformColors.Config.GetValue(CustomPlatformColors.customDashBackgroundTexture);
+                        if (customTexture != null)
+                        {
+                            tiledImage.Texture.Target = (IAssetProvider<ITexture2D>)backgroundSlot.AttachTexture(customTexture);
+                        }
+                    }
+                }
+                else
+                {
+                    // Check for existing Image component (solid background)
+                    Image backgroundImage = backgroundSlot.GetComponent<Image>();
+                    if (backgroundImage != null)
+                    {
+                        if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashBackgroundColor, out colorX bgColor))
+                        {
+                            backgroundImage.Tint.Value = bgColor;
+                        }
+                    }
+                    
+                    // If no image component exists but we want a custom texture, create one now
+                    if (CustomPlatformColors.Config.GetValue(CustomPlatformColors.useCustomDashBackground))
+                    {
+                        Uri customTexture = CustomPlatformColors.Config.GetValue(CustomPlatformColors.customDashBackgroundTexture);
+                        if (customTexture != null && backgroundImage != null)
+                        {
+                            // Remove the existing solid color image
+                            backgroundImage.Destroy();
+                            
+                            // Create a tiled image with our custom texture
+                            TiledRawImage newTiledImage = backgroundSlot.AttachComponent<TiledRawImage>();
+                            newTiledImage.TileSize.Value = RadiantDashScreen.BackgroundTiling;
+                            newTiledImage.Texture.Target = (IAssetProvider<ITexture2D>)backgroundSlot.AttachTexture(customTexture);
+                            
+                            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashBackgroundColor, out colorX bgColor))
+                            {
+                                newTiledImage.Tint.Value = bgColor;
+                            }
+                            else
+                            {
+                                newTiledImage.Tint.Value = UserspaceRadiantDash.DEFAULT_BACKGROUND;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                UniLog.Error($"[CustomPlatformColors] Error applying GridContainer background customization: {ex.Message}");
+            }
+        }
+
+        // Patch OnChanges to handle UV_RectMaterial settings and re-apply background patches
         [HarmonyPatch("OnChanges")]
         [HarmonyPostfix]
         public static void OnChanges_Postfix(RadiantDash __instance)
@@ -146,6 +244,9 @@ namespace CustomPlatformColors.Patches
                     buttonsBorderMaterial.Target.OuterColor.Value = new colorX(0f, 0f, 0f, 0f);
                     buttonsBorderMaterial.Target.Sidedness.Value = Sidedness.Back;
                 }
+
+                // Re-apply GridContainerScreen background patches when RadiantDash changes
+                PatchGridContainerScreens(__instance);
             }
             catch (Exception ex)
             {
