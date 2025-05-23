@@ -2,9 +2,21 @@ CustomPlatformColors
 
 *Woof woof!* A [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) mod for [Resonite](https://resonite.com/) that lets you customize your platform's color scheme! 🎨
 
-| Dashboard | UIX | Settings |
+## 🖼️ Screenshots
+
+| Home | UIX | Settings |
 |:-------------:|:-------------:|:-------------:|
-| <img src="CustomPlatformColors/Images/Home.png" alt="Default platform colors" width="300"/> | <img src="CustomPlatformColors/Images/UIX.png" alt="Customized platform colors" width="300"/> | <img src="CustomPlatformColors/Images/Settings.png" alt="Customized platform colors" width="300"/> |
+| <img src="CustomPlatformColors/Images/Home.png" alt="Home dashboard with custom colors" width="300"/> | <img src="CustomPlatformColors/Images/UIX.png" alt="UIX interface with custom colors" width="300"/> | <img src="CustomPlatformColors/Images/Settings.png" alt="Settings panel with custom colors" width="300"/> |
+
+
+| Worlds | Inventory | Files |
+|:-------------:|:-------------:|:-------------:|
+| <img src="CustomPlatformColors/Images/Worlds.png" alt="Worlds browser with custom colors" width="300"/> | <img src="CustomPlatformColors/Images/Inventory.png" alt="Inventory interface with custom colors" width="300"/> | <img src="CustomPlatformColors/Images/Files.png" alt="Files browser with custom colors" width="300"/> |
+
+
+| Contacts | Session |
+|:-------------:|:-------------:|
+| <img src="CustomPlatformColors/Images/Contacts.png" alt="Contacts interface with custom colors" width="300"/> | <img src="CustomPlatformColors/Images/Session.png" alt="Session interface with custom colors" width="300"/> |
 
 ## 🦴 Features
 
