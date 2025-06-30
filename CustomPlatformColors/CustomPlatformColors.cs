@@ -36,6 +36,8 @@ namespace CustomPlatformColors
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<colorX> neutralMid = new("neutralMid", "Mid neutral color", () => RadiantUI_Constants.Neutrals.MID);
         [AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<colorX> neutralMidLight = new("neutralMidLight", "Mid light neutral color", () => RadiantUI_Constants.Neutrals.MIDLIGHT);
+		[AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<colorX> neutralLight = new("neutralLight", "Light neutral color", () => RadiantUI_Constants.Neutrals.LIGHT);
 
         // Hero colors
@@ -53,6 +55,22 @@ namespace CustomPlatformColors
         public static readonly ModConfigurationKey<colorX> heroCyan = new("heroCyan", "Hero cyan color", () => RadiantUI_Constants.Hero.CYAN);
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<colorX> heroOrange = new("heroOrange", "Hero orange color", () => RadiantUI_Constants.Hero.ORANGE);
+
+        // Mid colors
+		[AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<dummy> spacerMid = new("spacerMid", "--- Mid Colors ---");
+        [AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<colorX> midYellow = new("midYellow", "Mid yellow color", () => RadiantUI_Constants.MidLight.YELLOW);
+        [AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<colorX> midGreen = new("midGreen", "Mid green color", () => RadiantUI_Constants.MidLight.GREEN);
+        [AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<colorX> midRed = new("midRed", "Mid red color", () => RadiantUI_Constants.MidLight.RED);
+        [AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<colorX> midPurple = new("midPurple", "Mid purple color", () => RadiantUI_Constants.MidLight.PURPLE);
+        [AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<colorX> midCyan = new("midCyan", "Mid cyan color", () => RadiantUI_Constants.MidLight.CYAN);
+        [AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<colorX> midOrange = new("midOrange", "Mid orange color", () => RadiantUI_Constants.MidLight.ORANGE);
 
         // Sub colors
 		[AutoRegisterConfigKey]
@@ -227,7 +245,7 @@ namespace CustomPlatformColors
             }
         }
 		
-		// Fixed
+		        // Fixed
         public void UpdateColors(PlatformColorPalette palette, bool forceUpdate = false)
         {
             if (Config == null || !Config.GetValue(enabled) || palette == null) 
@@ -256,12 +274,18 @@ namespace CustomPlatformColors
                 if (Config.TryGetValue(neutralDark, out colorX darkColor))
                 {
                     palette.Neutrals.Dark.Value = darkColor;
-                    palette.Neutrals.DarkHex.Value =darkColor.ToHexString();
+                    palette.Neutrals.DarkHex.Value = darkColor.ToHexString();
                 }
                 if (Config.TryGetValue(neutralMid, out colorX midColor))
                 {
                     palette.Neutrals.Mid.Value = midColor;
                     palette.Neutrals.MidHex.Value = midColor.ToHexString();
+                }
+                // Handle new MidLight color if it exists
+                if (palette.Neutrals.MidLight != null && Config.TryGetValue(neutralMidLight, out colorX midLightColor))
+                {
+                    palette.Neutrals.MidLight.Value = midLightColor;
+                    palette.Neutrals.MidLightHex.Value = midLightColor.ToHexString();
                 }
                 if (Config.TryGetValue(neutralLight, out colorX lightColor))
                 {
@@ -295,6 +319,41 @@ namespace CustomPlatformColors
                     if (Config.TryGetValue(heroOrange, out colorX orangeColor))
                     {
                         palette.Hero.Orange.Value = orangeColor;
+                    }
+                }
+
+                // Update Mid colors (new in the updated game version)
+                if (palette.Mid != null)
+                {
+                    if (Config.TryGetValue(midYellow, out colorX yellowColor))
+                    {
+                        palette.Mid.Yellow.Value = yellowColor;
+                        palette.Mid.YellowHex.Value = yellowColor.ToHexString();
+                    }
+                    if (Config.TryGetValue(midGreen, out colorX greenColor))
+                    {
+                        palette.Mid.Green.Value = greenColor;
+                        palette.Mid.GreenHex.Value = greenColor.ToHexString();
+                    }
+                    if (Config.TryGetValue(midRed, out colorX redColor))
+                    {
+                        palette.Mid.Red.Value = redColor;
+                        palette.Mid.RedHex.Value = redColor.ToHexString();
+                    }
+                    if (Config.TryGetValue(midPurple, out colorX purpleColor))
+                    {
+                        palette.Mid.Purple.Value = purpleColor;
+                        palette.Mid.PurpleHex.Value = purpleColor.ToHexString();
+                    }
+                    if (Config.TryGetValue(midCyan, out colorX cyanColor))
+                    {
+                        palette.Mid.Cyan.Value = cyanColor;
+                        palette.Mid.CyanHex.Value = cyanColor.ToHexString();
+                    }
+                    if (Config.TryGetValue(midOrange, out colorX orangeColor))
+                    {
+                        palette.Mid.Orange.Value = orangeColor;
+                        palette.Mid.OrangeHex.Value = orangeColor.ToHexString();
                     }
                 }
 
