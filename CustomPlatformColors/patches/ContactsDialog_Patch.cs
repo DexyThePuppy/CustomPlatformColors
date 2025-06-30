@@ -155,7 +155,8 @@ namespace CustomPlatformColors.Patches
                     !CustomPlatformColors.Config.GetValue(CustomPlatformColors.patchUserspaceScreensManager))
                     return;
 
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.darkOrange, out colorX color))
+                colorX color = CustomPlatformColors.GetDarkOrange();
+                if (CustomPlatformColors.Config != null)
                 {
                     __result = color;
                 }
@@ -176,7 +177,8 @@ namespace CustomPlatformColors.Patches
                     !CustomPlatformColors.Config.GetValue(CustomPlatformColors.patchUserspaceScreensManager))
                     return;
 
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.darkYellow, out colorX color))
+                colorX color = CustomPlatformColors.GetDarkYellow();
+                if (CustomPlatformColors.Config != null)
                 {
                     __result = color;
                 }
@@ -197,7 +199,8 @@ namespace CustomPlatformColors.Patches
                     !CustomPlatformColors.Config.GetValue(CustomPlatformColors.patchUserspaceScreensManager))
                     return;
 
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.darkGreen, out colorX color))
+                colorX color = CustomPlatformColors.GetDarkGreen();
+                if (CustomPlatformColors.Config != null)
                 {
                     __result = color;
                 }
@@ -218,7 +221,8 @@ namespace CustomPlatformColors.Patches
                     !CustomPlatformColors.Config.GetValue(CustomPlatformColors.patchUserspaceScreensManager))
                     return;
 
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.darkRed, out colorX color))
+                colorX color = CustomPlatformColors.GetDarkRed();
+                if (CustomPlatformColors.Config != null)
                 {
                     __result = color;
                 }
@@ -239,7 +243,8 @@ namespace CustomPlatformColors.Patches
                     !CustomPlatformColors.Config.GetValue(CustomPlatformColors.patchUserspaceScreensManager))
                     return;
 
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.darkCyan, out colorX color))
+                colorX color = CustomPlatformColors.GetDarkCyan();
+                if (CustomPlatformColors.Config != null)
                 {
                     __result = color;
                 }
@@ -260,7 +265,8 @@ namespace CustomPlatformColors.Patches
                     !CustomPlatformColors.Config.GetValue(CustomPlatformColors.patchUserspaceScreensManager))
                     return;
 
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.darkRed, out colorX color))
+                colorX color = CustomPlatformColors.GetDarkRed();
+                if (CustomPlatformColors.Config != null)
                 {
                     // Use a brighter version for the block color
                     __result = color.MulRGB(1.5f);
@@ -343,7 +349,8 @@ namespace CustomPlatformColors.Patches
                                     {
                                         texture.ForegroundColor.Value = heroColor;
                                     }
-                                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.darkGreen, out colorX darkColor))
+                                    colorX darkColor = CustomPlatformColors.GetDarkGreen();
+                                    if (CustomPlatformColors.Config != null)
                                     {
                                         texture.BackgroundColor.Value = darkColor;
                                     }
@@ -354,7 +361,8 @@ namespace CustomPlatformColors.Patches
                                     {
                                         texture.ForegroundColor.Value = heroColor;
                                     }
-                                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.darkCyan, out colorX darkColor))
+                                    colorX darkColor = CustomPlatformColors.GetDarkCyan();
+                                    if (CustomPlatformColors.Config != null)
                                     {
                                         texture.BackgroundColor.Value = darkColor;
                                     }

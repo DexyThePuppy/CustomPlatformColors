@@ -25,8 +25,7 @@ namespace CustomPlatformColors.Patches
             if (!CustomPlatformColors.ShouldApplyPatch())
                 return;
 
-            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventorySelectedColor, out colorX color))
-                __result = color;
+            __result = CustomPlatformColors.GetInventorySelectedColor();
         }
 
         // Patch OnChanges to customize directory and file colors
@@ -44,23 +43,20 @@ namespace CustomPlatformColors.Patches
                 {
                     if (item.Type.Value == FileSystemItem.EntryType.Directory)
                     {
-                        if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventoryFolderColor, out colorX folderColor))
-                            item.NormalColor.Value = folderColor;
-                        
-                        if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventoryFolderTextColor, out colorX folderTextColor))
-                            item.NormalText.Value = folderTextColor;
+                        // Directories use yellow colors (matching RadiantUI_Constants.Sub.YELLOW and Hero.YELLOW)
+                        item.NormalColor.Value = CustomPlatformColors.GetInventoryFolderColor();
+                        item.NormalText.Value = CustomPlatformColors.GetInventoryFolderTextColor();
                     }
                     else
                     {
-                        if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventoryDeselectedColor, out colorX fileColor))
-                            item.NormalColor.Value = fileColor;
+                        // Files use cyan colors (matching RadiantUI_Constants.Sub.CYAN and Hero.CYAN)
+                        item.NormalColor.Value = CustomPlatformColors.GetInventoryLinkColor();
+                        item.NormalText.Value = CustomPlatformColors.GetInventoryLinkTextColor();
                     }
 
-                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventorySelectedColor, out colorX selectedColor))
-                        item.SelectedColor.Value = selectedColor;
-
-                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventorySelectedTextColor, out colorX selectedTextColor))
-                        item.SelectedText.Value = selectedTextColor;
+                    // Both files and directories use green for selection
+                    item.SelectedColor.Value = CustomPlatformColors.GetInventorySelectedColor();
+                    item.SelectedText.Value = CustomPlatformColors.GetInventorySelectedTextColor();
                 }
             }
             catch (System.Exception ex)

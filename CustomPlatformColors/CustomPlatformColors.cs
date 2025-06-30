@@ -21,7 +21,7 @@ namespace CustomPlatformColors
         public override string Name => "CustomPlatformColors";
         public override string Author => "Dexy";
         public override string Version => VERSION_CONSTANT;
-        public const string VERSION_CONSTANT = "1.0.4";
+        public const string VERSION_CONSTANT = "1.0.5";
         public override string Link => "https://github.com/DexyThePuppy/CustomPlatformColors";
 
         //The following
@@ -36,73 +36,148 @@ namespace CustomPlatformColors
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<colorX> neutralMid = new("neutralMid", "Mid neutral color", () => RadiantUI_Constants.Neutrals.MID);
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> neutralMidLight = new("neutralMidLight", "Mid light neutral color", () => RadiantUI_Constants.Neutrals.MIDLIGHT);
-		[AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<colorX> neutralMidLight = new("neutralMidLight", "Mid-Light neutral color", () => RadiantUI_Constants.Neutrals.MIDLIGHT);
+        [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<colorX> neutralLight = new("neutralLight", "Light neutral color", () => RadiantUI_Constants.Neutrals.LIGHT);
 
-        // Hero colors
-		[AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<dummy> spacerHero = new("spacerHero", "--- Hero Colors ---");
+        // Hero colors (Primary configurable colors)
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> heroYellow = new("heroYellow", "Hero yellow color", () => RadiantUI_Constants.Hero.YELLOW);
+        public static readonly ModConfigurationKey<dummy> spacerHero = new("spacerHero", "--- Hero Colors (Primary Colors) ---");
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> heroGreen = new("heroGreen", "Hero green color", () => RadiantUI_Constants.Hero.GREEN);
+        public static readonly ModConfigurationKey<colorX> heroYellow = new("heroYellow", "Hero yellow color (Mid/Sub/Dark auto-generated)", () => RadiantUI_Constants.Hero.YELLOW);
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> heroRed = new("heroRed", "Hero red color", () => RadiantUI_Constants.Hero.RED);
+        public static readonly ModConfigurationKey<colorX> heroGreen = new("heroGreen", "Hero green color (Mid/Sub/Dark auto-generated)", () => RadiantUI_Constants.Hero.GREEN);
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> heroPurple = new("heroPurple", "Hero purple color", () => RadiantUI_Constants.Hero.PURPLE);
+        public static readonly ModConfigurationKey<colorX> heroRed = new("heroRed", "Hero red color (Mid/Sub/Dark auto-generated)", () => RadiantUI_Constants.Hero.RED);
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> heroCyan = new("heroCyan", "Hero cyan color", () => RadiantUI_Constants.Hero.CYAN);
+        public static readonly ModConfigurationKey<colorX> heroPurple = new("heroPurple", "Hero purple color (Mid/Sub/Dark auto-generated)", () => RadiantUI_Constants.Hero.PURPLE);
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> heroOrange = new("heroOrange", "Hero orange color", () => RadiantUI_Constants.Hero.ORANGE);
+        public static readonly ModConfigurationKey<colorX> heroCyan = new("heroCyan", "Hero cyan color (Mid/Sub/Dark auto-generated)", () => RadiantUI_Constants.Hero.CYAN);
+        [AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<colorX> heroOrange = new("heroOrange", "Hero orange color (Mid/Sub/Dark auto-generated)", () => RadiantUI_Constants.Hero.ORANGE);
 
-        // Mid colors
-		[AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<dummy> spacerMid = new("spacerMid", "--- Mid Colors ---");
+        // Configurable color generation factors
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> midYellow = new("midYellow", "Mid yellow color", () => RadiantUI_Constants.MidLight.YELLOW);
+        public static readonly ModConfigurationKey<dummy> spacerColorGeneration = new("spacerColorGeneration", "--- Color Generation Settings ---");
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> midGreen = new("midGreen", "Mid green color", () => RadiantUI_Constants.MidLight.GREEN);
+        public static readonly ModConfigurationKey<float> midSaturationFactor = new("midSaturationFactor", "Mid saturation factor", () => 0.75f);
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> midRed = new("midRed", "Mid red color", () => RadiantUI_Constants.MidLight.RED);
+        public static readonly ModConfigurationKey<float> midBrightnessFactor = new("midBrightnessFactor", "Mid color brightness factor (0.0-1.0)", () => 0.247f);
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> midPurple = new("midPurple", "Mid purple color", () => RadiantUI_Constants.MidLight.PURPLE);
+        public static readonly ModConfigurationKey<float> subSaturationFactor = new("subSaturationFactor", "Sub saturation factor", () => 0.45f);
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> midCyan = new("midCyan", "Mid cyan color", () => RadiantUI_Constants.MidLight.CYAN);
+        public static readonly ModConfigurationKey<float> subBrightnessFactor = new("subBrightnessFactor", "Sub color brightness factor (0.0-1.0)", () => 0.501f);
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> midOrange = new("midOrange", "Mid orange color", () => RadiantUI_Constants.MidLight.ORANGE);
+        public static readonly ModConfigurationKey<float> darkBrightnessFactor = new("darkBrightnessFactor", "Dark color brightness factor (0.0-1.0)", () => 0.165f);
+        [AutoRegisterConfigKey]
+        public static readonly ModConfigurationKey<float> darkSaturationFactor = new("darkSaturationFactor", "Dark saturation factor", () => 0.25f);
 
-        // Sub colors
-		[AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<dummy> spacerSub = new("spacerSub", "--- Sub Colors ---");
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> subYellow = new("subYellow", "Sub yellow color", () => RadiantUI_Constants.Sub.YELLOW);
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> subGreen = new("subGreen", "Sub green color", () => RadiantUI_Constants.Sub.GREEN);
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> subRed = new("subRed", "Sub red color", () => RadiantUI_Constants.Sub.RED);
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> subPurple = new("subPurple", "Sub purple color", () => RadiantUI_Constants.Sub.PURPLE);
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> subCyan = new("subCyan", "Sub cyan color", () => RadiantUI_Constants.Sub.CYAN);
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> subOrange = new("subOrange", "Sub orange color", () => RadiantUI_Constants.Sub.ORANGE);
+        // Helper method to get float configuration values
+        private static float GetValue(ModConfigurationKey<float> key)
+        {
+            if (Config == null) 
+                return 0.5f; // Safe default brightness factor
+            return Config.GetValue(key);
+        }
 
-        // Dark colors
-		[AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<dummy> spacerDark = new("spacerDark", "--- Dark Colors ---");
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> darkYellow = new("darkYellow", "Dark yellow color", () => RadiantUI_Constants.Dark.YELLOW);
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> darkGreen = new("darkGreen", "Dark green color", () => RadiantUI_Constants.Dark.GREEN);
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> darkRed = new("darkRed", "Dark red color", () => RadiantUI_Constants.Dark.RED);
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> darkPurple = new("darkPurple", "Dark purple color", () => RadiantUI_Constants.Dark.PURPLE);
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> darkCyan = new("darkCyan", "Dark cyan color", () => RadiantUI_Constants.Dark.CYAN);
-        [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<colorX> darkOrange = new("darkOrange", "Dark orange color", () => RadiantUI_Constants.Dark.ORANGE);
+        // Helper method to generate universal color variants that preserve hue while adjusting brightness/saturation
+        // Creates a proper color curve for any base color, not just browns
+        private static colorX GenerateDarkerShade(colorX baseColor, ModConfigurationKey<float> brightnessFactorKey)
+        {
+            float targetBrightness = GetValue(brightnessFactorKey);
+            bool isDarkColor = brightnessFactorKey == darkBrightnessFactor;
+            bool isSubColor = brightnessFactorKey == subBrightnessFactor;
+            bool isMidColor = brightnessFactorKey == midBrightnessFactor;
+            
+            // Convert to HSV for proper hue preservation
+            ColorHSV hsv = new ColorHSV(baseColor.baseColor);
+            
+            // Calculate current luminance for brightness scaling
+            float currentLuminance = (baseColor.r * 0.299f + baseColor.g * 0.587f + baseColor.b * 0.114f);
+            
+            // Apply brightness scaling based on level
+            float brightnessScale = targetBrightness / currentLuminance;
+            hsv.v *= brightnessScale;
+            
+            // Apply saturation reduction based on level - preserves hue but reduces intensity
+            if (isDarkColor)
+            {
+                // Dark colors get maximum saturation reduction (0.25) for very muted appearance
+                float saturationReduction = GetValue(darkSaturationFactor);
+                hsv.s *= saturationReduction;
+            }
+            else if (isSubColor)
+            {
+                // Sub colors get moderate saturation reduction (0.45) for slightly muted appearance
+                float saturationReduction = GetValue(subSaturationFactor);
+                hsv.s *= saturationReduction;
+            }
+            else if (isMidColor)
+            {
+                // Mid colors get light saturation reduction (0.75) for more vibrant appearance
+                float saturationReduction = GetValue(midSaturationFactor);
+                hsv.s *= saturationReduction;
+            }
+            
+            // Convert back to RGB, preserving the original color profile
+            color result = hsv.ToRGB();
+            return new colorX(result, baseColor.profile);
+        }
+
+        // Helper method to update a color group with generated colors
+        private void UpdateColorGroup(PlatformColorPalette palette, colorX yellow, colorX green, colorX red, colorX purple, colorX cyan, colorX orange)
+        {
+            if (palette == null) return;
+            
+            // Update Hero colors (original colors)
+            palette.Hero.Yellow.Value = yellow;
+            palette.Hero.Green.Value = green;
+            palette.Hero.Red.Value = red;
+            palette.Hero.Purple.Value = purple;
+            palette.Hero.Cyan.Value = cyan;
+            palette.Hero.Orange.Value = orange;
+            
+            // Generate Mid colors (0.501 - brighter MidLight variants)
+            palette.Mid.Yellow.Value = GenerateDarkerShade(yellow, midBrightnessFactor);
+            palette.Mid.Green.Value = GenerateDarkerShade(green, midBrightnessFactor);
+            palette.Mid.Red.Value = GenerateDarkerShade(red, midBrightnessFactor);
+            palette.Mid.Purple.Value = GenerateDarkerShade(purple, midBrightnessFactor);
+            palette.Mid.Cyan.Value = GenerateDarkerShade(cyan, midBrightnessFactor);
+            palette.Mid.Orange.Value = GenerateDarkerShade(orange, midBrightnessFactor);
+            
+            // Generate Sub colors (0.247 - darker variants)
+            palette.Sub.Yellow.Value = GenerateDarkerShade(yellow, subBrightnessFactor);
+            palette.Sub.Green.Value = GenerateDarkerShade(green, subBrightnessFactor);
+            palette.Sub.Red.Value = GenerateDarkerShade(red, subBrightnessFactor);
+            palette.Sub.Purple.Value = GenerateDarkerShade(purple, subBrightnessFactor);
+            palette.Sub.Cyan.Value = GenerateDarkerShade(cyan, subBrightnessFactor);
+            palette.Sub.Orange.Value = GenerateDarkerShade(orange, subBrightnessFactor);
+            
+            // Generate Dark colors (0.2 - darkest variants)
+            palette.Dark.Yellow.Value = GenerateDarkerShade(yellow, darkBrightnessFactor);
+            palette.Dark.Green.Value = GenerateDarkerShade(green, darkBrightnessFactor);
+            palette.Dark.Red.Value = GenerateDarkerShade(red, darkBrightnessFactor);
+            palette.Dark.Purple.Value = GenerateDarkerShade(purple, darkBrightnessFactor);
+            palette.Dark.Cyan.Value = GenerateDarkerShade(cyan, darkBrightnessFactor);
+            palette.Dark.Orange.Value = GenerateDarkerShade(orange, darkBrightnessFactor);
+            
+            // Update hex values for all colors
+            UpdateHexValues(palette.Hero);
+            UpdateHexValues(palette.Mid);
+            UpdateHexValues(palette.Sub);
+            UpdateHexValues(palette.Dark);
+        }
+        
+        // Helper method to update hex values for a color group
+        private void UpdateHexValues(PlatformColorPalette.Colors group)
+        {
+            group.YellowHex.Value = group.Yellow.Value.ToHexString();
+            group.GreenHex.Value = group.Green.Value.ToHexString();
+            group.RedHex.Value = group.Red.Value.ToHexString();
+            group.PurpleHex.Value = group.Purple.Value.ToHexString();
+            group.CyanHex.Value = group.Cyan.Value.ToHexString();
+            group.OrangeHex.Value = group.Orange.Value.ToHexString();
+        }
 
         // UI Button Colors
         [AutoRegisterConfigKey]
@@ -166,28 +241,23 @@ namespace CustomPlatformColors
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<colorX> platformColor = new("platformColor", "Platform color", () => new colorX(0.5f, 0.5f, 0.5f));
         
-		// Inventory Colors
+        // Inventory Colors - Using existing hero colors for consistency
 		[AutoRegisterConfigKey]
-		public static readonly ModConfigurationKey<dummy> spacerInventory = new("spacerInventory", "--- Inventory Colors ---");
+        public static readonly ModConfigurationKey<dummy> spacerInventory = new("spacerInventory", "--- Inventory Colors (Auto-generated from Hero Colors) ---");
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<bool> patchInventoryBrowser = new("patchInventoryBrowser", "Patch inventory browser", () => true);
-		// Inventory Browser Folder Colours
 		[AutoRegisterConfigKey] 
-		public static readonly ModConfigurationKey<colorX> inventoryDeselectedColor = new("inventoryDeselectedColor", "Inventory deselected color", () => RadiantUI_Constants.Neutrals.MID);
-		[AutoRegisterConfigKey] 
-		public static readonly ModConfigurationKey<colorX> inventorySelectedColor = new("inventorySelectedColor", "", () => RadiantUI_Constants.Sub.GREEN);
-        [AutoRegisterConfigKey] 
-		public static readonly ModConfigurationKey<colorX> inventorySelectedTextColor = new("inventorySelectedTextColor", "", () => RadiantUI_Constants.Hero.GREEN);
-		[AutoRegisterConfigKey] 
-		public static readonly ModConfigurationKey<colorX> inventoryFolderColor = new("inventoryFolderColor", "", () => RadiantUI_Constants.Sub.YELLOW);
-		[AutoRegisterConfigKey] 
-		public static readonly ModConfigurationKey<colorX> inventoryFolderTextColor = new("inventoryFolderTextColor", "", () => RadiantUI_Constants.Hero.YELLOW);
-		[AutoRegisterConfigKey] 
-		public static readonly ModConfigurationKey<colorX> inventoryLinkColor = new("inventoryLinkColor", "", () => RadiantUI_Constants.Sub.CYAN);
-		[AutoRegisterConfigKey] 
-		public static readonly ModConfigurationKey<colorX> inventoryLinkTextColor = new("inventoryLinkTextColor", "", () => RadiantUI_Constants.Hero.CYAN);
-		[AutoRegisterConfigKey] 
-		public static readonly ModConfigurationKey<colorX> inventoryFavouriteColor = new("inventoryFavouriteColor", "", () => RadiantUI_Constants.Sub.PURPLE);
+        public static readonly ModConfigurationKey<bool> inventoryTransparentDeselected = new("inventoryTransparentDeselected", "Use transparent background for deselected items", () => false);
+
+        // Helper methods to get inventory colors using existing color system
+        public static colorX GetInventoryDeselectedColor() => GetValue(inventoryTransparentDeselected) ? colorX.Clear : GetValue(neutralMid);
+        public static colorX GetInventorySelectedColor() => GenerateDarkerShade(GetValue(heroGreen), subBrightnessFactor);
+        public static colorX GetInventorySelectedTextColor() => GetValue(heroGreen);
+        public static colorX GetInventoryFolderColor() => GenerateDarkerShade(GetValue(heroYellow), subBrightnessFactor);
+        public static colorX GetInventoryFolderTextColor() => GetValue(heroYellow);
+        public static colorX GetInventoryLinkColor() => GenerateDarkerShade(GetValue(heroCyan), subBrightnessFactor);
+        public static colorX GetInventoryLinkTextColor() => GetValue(heroCyan);
+        public static colorX GetInventoryFavouriteColor() => GenerateDarkerShade(GetValue(heroPurple), subBrightnessFactor);
 
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<Uri> customDashBackgroundTexture = new("customDashBackgroundTexture", "Custom dashboard background texture URL", () => null);
@@ -228,185 +298,75 @@ namespace CustomPlatformColors
             harmony.PatchAll();
 		}
 
-		[HarmonyPatch]
-        class PlatformColorPalette_OnStart_Patch
+		[HarmonyPatch(typeof(PlatformColorPalette))]
+        public class PlatformColorPalette_Patch
         {
-            static MethodBase TargetMethod()
+            [HarmonyPatch("OnStart")]
+            [HarmonyPostfix]
+            public static void Postfix(PlatformColorPalette __instance)
             {
-                return typeof(PlatformColorPalette).GetMethod("OnStart", BindingFlags.NonPublic | BindingFlags.Instance);
-            }
-
-            static void Postfix(PlatformColorPalette __instance)
-            {
-                if (Instance != null)
+                try
                 {
-                    Instance.UpdateColors(__instance);
+                    if (!ShouldApplyPatch() || Config == null)
+                        return;
+
+                    Instance?.UpdateColors(__instance);
+                }
+                catch (Exception ex)
+                {
+                    UniLog.Error($"[CustomPlatformColors] Error in PlatformColorPalette_Patch.Postfix: {ex.Message}");
                 }
             }
         }
 		
-		        // Fixed
-        public void UpdateColors(PlatformColorPalette palette, bool forceUpdate = false)
+        // Helper method to get configuration values
+        private static colorX GetValue(ModConfigurationKey<colorX> key)
         {
-            if (Config == null || !Config.GetValue(enabled) || palette == null) 
-            {
-                Warn("Config is null or mod is disabled or palette is null!");
-                return;
-            }
+            if (Config == null) 
+                return new colorX(1, 1, 1, 1); // Default white color
+            return Config.GetValue(key);
+        }
 
-            // Get the AllocUser
-            palette.Slot.ReferenceID.ExtractIDs(out ulong position, out byte user);
-            FrooxEngine.User allocUser = palette.World.GetUserByAllocationID(user);
+        // Helper method to get boolean configuration values
+        private static bool GetValue(ModConfigurationKey<bool> key)
+        {
+            if (Config == null) 
+                return false;
+            return Config.GetValue(key);
+        }
 
-            // Don't run if the AllocUser isn't the LocalUser
-            if (allocUser == null || position < allocUser.AllocationIDStart) {
-                palette.ReferenceID.ExtractIDs(out ulong position1, out byte user1);
-                FrooxEngine.User instanceAllocUser = palette.World.GetUserByAllocationID(user1);
-                
-                // Don't run if the AllocUser is null or Invalid, and the Instance AllocUser is Null or invalid or isn't the LocalUser
-                if (instanceAllocUser == null || position1 < instanceAllocUser.AllocationIDStart || instanceAllocUser != palette.LocalUser) return;
-            }
-            else if (allocUser != palette.LocalUser) return;
+        // Helper methods to get auto-generated dark colors for use in patch files
+        public static colorX GetDarkOrange() => GenerateDarkerShade(GetValue(heroOrange), darkBrightnessFactor);
+        public static colorX GetDarkYellow() => GenerateDarkerShade(GetValue(heroYellow), darkBrightnessFactor);
+        public static colorX GetDarkGreen() => GenerateDarkerShade(GetValue(heroGreen), darkBrightnessFactor);
+        public static colorX GetDarkRed() => GenerateDarkerShade(GetValue(heroRed), darkBrightnessFactor);
+        public static colorX GetDarkCyan() => GenerateDarkerShade(GetValue(heroCyan), darkBrightnessFactor);
+        public static colorX GetDarkPurple() => GenerateDarkerShade(GetValue(heroPurple), darkBrightnessFactor);
 
-            try
-            {
-                // Update Neutral colors
-                if (Config.TryGetValue(neutralDark, out colorX darkColor))
-                {
-                    palette.Neutrals.Dark.Value = darkColor;
-                    palette.Neutrals.DarkHex.Value = darkColor.ToHexString();
-                }
-                if (Config.TryGetValue(neutralMid, out colorX midColor))
-                {
-                    palette.Neutrals.Mid.Value = midColor;
-                    palette.Neutrals.MidHex.Value = midColor.ToHexString();
-                }
-                // Handle new MidLight color if it exists
-                if (palette.Neutrals.MidLight != null && Config.TryGetValue(neutralMidLight, out colorX midLightColor))
-                {
-                    palette.Neutrals.MidLight.Value = midLightColor;
-                    palette.Neutrals.MidLightHex.Value = midLightColor.ToHexString();
-                }
-                if (Config.TryGetValue(neutralLight, out colorX lightColor))
-                {
-                    palette.Neutrals.Light.Value = lightColor;
-                    palette.Neutrals.LightHex.Value = lightColor.ToHexString();
-                }
+        public void UpdateColors(PlatformColorPalette palette)
+        {
+            if (palette == null) return;
 
-                // Update Hero colors
-                if (palette.Hero != null)
-                {
-                    if (Config.TryGetValue(heroYellow, out colorX yellowColor))
-                    {
-                        palette.Hero.Yellow.Value = yellowColor;
-                    }
-                    if (Config.TryGetValue(heroGreen, out colorX greenColor))
-                    {
-                        palette.Hero.Green.Value = greenColor;
-                    }
-                    if (Config.TryGetValue(heroRed, out colorX redColor))
-                    {
-                        palette.Hero.Red.Value = redColor;
-                    }
-                    if (Config.TryGetValue(heroPurple, out colorX purpleColor))
-                    {
-                        palette.Hero.Purple.Value = purpleColor;
-                    }
-                    if (Config.TryGetValue(heroCyan, out colorX cyanColor))
-                    {
-                        palette.Hero.Cyan.Value = cyanColor;
-                    }
-                    if (Config.TryGetValue(heroOrange, out colorX orangeColor))
-                    {
-                        palette.Hero.Orange.Value = orangeColor;
-                    }
-                }
+            // Update Neutral Colors
+            palette.Neutrals.Dark.Value = GetValue(neutralDark);
+            palette.Neutrals.DarkHex.Value = palette.Neutrals.Dark.Value.ToHexString();
+            palette.Neutrals.Mid.Value = GetValue(neutralMid);
+            palette.Neutrals.MidHex.Value = palette.Neutrals.Mid.Value.ToHexString();
+            palette.Neutrals.MidLight.Value = GetValue(neutralMidLight);
+            palette.Neutrals.MidLightHex.Value = palette.Neutrals.MidLight.Value.ToHexString();
+            palette.Neutrals.Light.Value = GetValue(neutralLight);
+            palette.Neutrals.LightHex.Value = palette.Neutrals.Light.Value.ToHexString();
 
-                // Update Mid colors (new in the updated game version)
-                if (palette.Mid != null)
-                {
-                    if (Config.TryGetValue(midYellow, out colorX yellowColor))
-                    {
-                        palette.Mid.Yellow.Value = yellowColor;
-                        palette.Mid.YellowHex.Value = yellowColor.ToHexString();
-                    }
-                    if (Config.TryGetValue(midGreen, out colorX greenColor))
-                    {
-                        palette.Mid.Green.Value = greenColor;
-                        palette.Mid.GreenHex.Value = greenColor.ToHexString();
-                    }
-                    if (Config.TryGetValue(midRed, out colorX redColor))
-                    {
-                        palette.Mid.Red.Value = redColor;
-                        palette.Mid.RedHex.Value = redColor.ToHexString();
-                    }
-                    if (Config.TryGetValue(midPurple, out colorX purpleColor))
-                    {
-                        palette.Mid.Purple.Value = purpleColor;
-                        palette.Mid.PurpleHex.Value = purpleColor.ToHexString();
-                    }
-                    if (Config.TryGetValue(midCyan, out colorX cyanColor))
-                    {
-                        palette.Mid.Cyan.Value = cyanColor;
-                        palette.Mid.CyanHex.Value = cyanColor.ToHexString();
-                    }
-                    if (Config.TryGetValue(midOrange, out colorX orangeColor))
-                    {
-                        palette.Mid.Orange.Value = orangeColor;
-                        palette.Mid.OrangeHex.Value = orangeColor.ToHexString();
-                    }
-                }
-
-                // Update Sub colors
-                if (palette.Sub != null)
-                {
-                    if (Config.TryGetValue(subYellow, out colorX yellowColor))
-                    {
-                        palette.Sub.Yellow.Value = yellowColor;
-                    }
-                    if (Config.TryGetValue(subGreen, out colorX greenColor))
-                    {
-                        palette.Sub.Green.Value = greenColor;
-                    }
-                    if (Config.TryGetValue(subRed, out colorX redColor))
-                    {
-                        palette.Sub.Red.Value = redColor;
-                    }
-                    if (Config.TryGetValue(subPurple, out colorX purpleColor))
-                    {
-                        palette.Sub.Purple.Value = purpleColor;
-                    }
-                    if (Config.TryGetValue(subCyan, out colorX cyanColor))
-                    {
-                        palette.Sub.Cyan.Value = cyanColor;
-                    }
-                    if (Config.TryGetValue(subOrange, out colorX orangeColor))
-                    {
-                        palette.Sub.Orange.Value = orangeColor;
-                    }
-                }
-
-                // Update Dark colors
-                if (palette.Dark != null)
-                {
-                    if (Config.TryGetValue(darkYellow, out colorX darkYellowColor) && darkYellowColor != null && palette.Dark?.Yellow != null)
-                        palette.Dark.Yellow.Value = darkYellowColor;
-                    if (Config.TryGetValue(darkGreen, out colorX darkGreenColor) && darkGreenColor != null && palette.Dark?.Green != null)
-                        palette.Dark.Green.Value = darkGreenColor;
-                    if (Config.TryGetValue(darkRed, out colorX darkRedColor) && darkRedColor != null && palette.Dark?.Red != null)
-                        palette.Dark.Red.Value = darkRedColor;
-                    if (Config.TryGetValue(darkPurple, out colorX darkPurpleColor) && darkPurpleColor != null && palette.Dark?.Purple != null)
-                        palette.Dark.Purple.Value = darkPurpleColor;
-                    if (Config.TryGetValue(darkCyan, out colorX darkCyanColor) && darkCyanColor != null && palette.Dark?.Cyan != null)
-                        palette.Dark.Cyan.Value = darkCyanColor;
-                    if (Config.TryGetValue(darkOrange, out colorX darkOrangeColor) && darkOrangeColor != null && palette.Dark?.Orange != null)
-                        palette.Dark.Orange.Value = darkOrangeColor;
-                }
-            }
-            catch (Exception e)
-            {
-                Error($"Error updating colors: {e}");
-            }
+            // Update Hero Colors and auto-generate Mid/Sub/Dark variants
+            UpdateColorGroup(
+                palette,
+                GetValue(heroYellow),
+                GetValue(heroGreen),
+                GetValue(heroRed),
+                GetValue(heroPurple),
+                GetValue(heroCyan),
+                GetValue(heroOrange)
+            );
         }
 
 		[HarmonyPatch(typeof(InventoryBrowser))]
@@ -426,8 +386,8 @@ namespace CustomPlatformColors
 				if (uri != null) {
 					foreach (FavoriteEntity value in Enums.GetValues<FavoriteEntity>()) {
 						if (uri == item.Engine.Cloud.Profile.GetCurrentFavorite(value)) {
-							item.NormalColor.Value = Config.GetValue(inventoryFavouriteColor);
-							item.SelectedColor.Value = Config.GetValue(inventoryFavouriteColor).MulRGB(2f);
+                            item.NormalColor.Value = GetInventoryFavouriteColor();
+                            item.SelectedColor.Value = GetInventoryFavouriteColor().MulRGB(2f);
 							return;
 						}
 					}
@@ -438,13 +398,13 @@ namespace CustomPlatformColors
 					RecordDirectory? directoryValue = directoryField.GetValue(item) as RecordDirectory;
 
 					if (directoryValue != null) {
-						item.NormalColor.Value = directoryValue.IsLink ? Config.GetValue(inventoryLinkColor) : Config.GetValue(inventoryFolderColor);
-						item.NormalText.Value = directoryValue.IsLink ? Config.GetValue(inventoryLinkTextColor) : Config.GetValue(inventoryFolderTextColor);
-						item.SelectedColor.Value = Config.GetValue(inventorySelectedColor);
-						item.SelectedText.Value = Config.GetValue(inventorySelectedTextColor);
+                        item.NormalColor.Value = directoryValue.IsLink ? GetInventoryLinkColor() : GetInventoryFolderColor();
+                        item.NormalText.Value = directoryValue.IsLink ? GetInventoryLinkTextColor() : GetInventoryFolderTextColor();
+                        item.SelectedColor.Value = GetInventorySelectedColor();
+                        item.SelectedText.Value = GetInventorySelectedTextColor();
 					} else {
-						item.NormalColor.Value = Config.GetValue(inventoryDeselectedColor);
-						item.SelectedColor.Value = Config.GetValue(inventoryDeselectedColor);
+                        item.NormalColor.Value = GetInventoryDeselectedColor();
+                        item.SelectedColor.Value = GetInventoryDeselectedColor();
 					}
 				}
 			}

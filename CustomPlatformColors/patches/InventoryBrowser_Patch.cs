@@ -44,8 +44,7 @@ namespace CustomPlatformColors.Patches
             if (!CustomPlatformColors.ShouldApplyPatch())
                 return;
 
-            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventoryDeselectedColor, out colorX color))
-                __result = color;
+            __result = CustomPlatformColors.GetInventoryDeselectedColor();
         }
 
         [HarmonyPatch("get_SELECTED_COLOR")]
@@ -55,8 +54,7 @@ namespace CustomPlatformColors.Patches
             if (!CustomPlatformColors.ShouldApplyPatch())
                 return;
 
-            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventorySelectedColor, out colorX color))
-                __result = color;
+            __result = CustomPlatformColors.GetInventorySelectedColor();
         }
 
         [HarmonyPatch("get_SELECTED_TEXT")]
@@ -66,8 +64,7 @@ namespace CustomPlatformColors.Patches
             if (!CustomPlatformColors.ShouldApplyPatch())
                 return;
 
-            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventorySelectedTextColor, out colorX color))
-                __result = color;
+            __result = CustomPlatformColors.GetInventorySelectedTextColor();
         }
 
         [HarmonyPatch("get_FOLDER_COLOR")]
@@ -77,8 +74,7 @@ namespace CustomPlatformColors.Patches
             if (!CustomPlatformColors.ShouldApplyPatch())
                 return;
 
-            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventoryFolderColor, out colorX color))
-                __result = color;
+            __result = CustomPlatformColors.GetInventoryFolderColor();
         }
 
         [HarmonyPatch("get_FOLDER_TEXT")]
@@ -88,8 +84,7 @@ namespace CustomPlatformColors.Patches
             if (!CustomPlatformColors.ShouldApplyPatch())
                 return;
 
-            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventoryFolderTextColor, out colorX color))
-                __result = color;
+            __result = CustomPlatformColors.GetInventoryFolderTextColor();
         }
 
         [HarmonyPatch("get_LINK_COLOR")]
@@ -99,8 +94,7 @@ namespace CustomPlatformColors.Patches
             if (!CustomPlatformColors.ShouldApplyPatch())
                 return;
 
-            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventoryLinkColor, out colorX color))
-                __result = color;
+            __result = CustomPlatformColors.GetInventoryLinkColor();
         }
 
         [HarmonyPatch("get_LINK_TEXT")]
@@ -110,8 +104,7 @@ namespace CustomPlatformColors.Patches
             if (!CustomPlatformColors.ShouldApplyPatch())
                 return;
 
-            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventoryLinkTextColor, out colorX color))
-                __result = color;
+            __result = CustomPlatformColors.GetInventoryLinkTextColor();
         }
 
         // Patch OnChanges to customize inventory items and their colors
@@ -139,11 +132,8 @@ namespace CustomPlatformColors.Patches
                             {
                                 if (url == __instance.Engine.Cloud.Profile.GetCurrentFavorite(entity))
                                 {
-                                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventoryFavouriteColor, out colorX favColor))
-                                    {
-                                        item.NormalColor.Value = favColor;
-                                        item.SelectedColor.Value = favColor.MulRGB(2f);
-                                    }
+                                    item.NormalColor.Value = CustomPlatformColors.GetInventoryFavouriteColor();
+                                    item.SelectedColor.Value = CustomPlatformColors.GetInventoryFavouriteColor().MulRGB(2f);
                                     isFavorite = true;
                                     break;
                                 }
@@ -158,34 +148,22 @@ namespace CustomPlatformColors.Patches
                         {
                             if (directory.IsLink)
                             {
-                                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventoryLinkColor, out colorX linkColor))
-                                    item.NormalColor.Value = linkColor;
-                                
-                                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventoryLinkTextColor, out colorX linkTextColor))
-                                    item.NormalText.Value = linkTextColor;
+                                item.NormalColor.Value = CustomPlatformColors.GetInventoryLinkColor();
+                                item.NormalText.Value = CustomPlatformColors.GetInventoryLinkTextColor();
                             }
                             else
                             {
-                                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventoryFolderColor, out colorX folderColor))
-                                    item.NormalColor.Value = folderColor;
-                                
-                                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventoryFolderTextColor, out colorX folderTextColor))
-                                    item.NormalText.Value = folderTextColor;
+                                item.NormalColor.Value = CustomPlatformColors.GetInventoryFolderColor();
+                                item.NormalText.Value = CustomPlatformColors.GetInventoryFolderTextColor();
                             }
 
-                            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventorySelectedColor, out colorX selectedColor))
-                                item.SelectedColor.Value = selectedColor;
-
-                            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventorySelectedTextColor, out colorX selectedTextColor))
-                                item.SelectedText.Value = selectedTextColor;
+                            item.SelectedColor.Value = CustomPlatformColors.GetInventorySelectedColor();
+                            item.SelectedText.Value = CustomPlatformColors.GetInventorySelectedTextColor();
                         }
                         else
                         {
-                            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventoryDeselectedColor, out colorX deselectedColor))
-                                item.NormalColor.Value = deselectedColor;
-
-                            if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.inventorySelectedColor, out colorX selectedColor))
-                                item.SelectedColor.Value = selectedColor;
+                            item.NormalColor.Value = CustomPlatformColors.GetInventoryDeselectedColor();
+                            item.SelectedColor.Value = CustomPlatformColors.GetInventorySelectedColor();
                         }
                     }
                 }
