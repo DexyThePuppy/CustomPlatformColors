@@ -3,6 +3,7 @@ using FrooxEngine;
 using Elements.Core;
 using FrooxEngine.UIX;
 using System.Threading.Tasks;
+using Renderite.Shared;
 
 namespace CustomPlatformColors.Patches
 {

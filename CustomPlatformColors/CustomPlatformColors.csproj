@@ -1,9 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<RootNamespace>CustomPlatformColors</RootNamespace>
 		<AssemblyName>CustomPlatformColors</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<TargetFramework>net472</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<FileAlignment>512</FileAlignment>
 		<LangVersion>10.0</LangVersion>
 		<Nullable>enable</Nullable>
@@ -23,10 +24,10 @@
 
 	<ItemGroup>
 		<Reference Include="Enums.NET">
-		  <HintPath>$(ResonitePath)Resonite_Data\Managed\Enums.NET.dll</HintPath>
+		  <HintPath>$(ResonitePath)Enums.NET.dll</HintPath>
 		</Reference>
 		<Reference Include="FrooxEngine.Store">
-		  <HintPath>$(ResonitePath)Resonite_Data\Managed\FrooxEngine.Store.dll</HintPath>
+		  <HintPath>$(ResonitePath)FrooxEngine.Store.dll</HintPath>
 		</Reference>
 		<Reference Include="ResoniteModLoader">
 		    <HintPath>$(ResonitePath)Libraries\ResoniteModLoader.dll</HintPath>
@@ -38,30 +39,26 @@
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="FrooxEngine">
-		    <HintPath>$(ResonitePath)Resonite_Data\Managed\FrooxEngine.dll</HintPath>
+		    <HintPath>$(ResonitePath)FrooxEngine.dll</HintPath>
 		    <Private>False</Private>
 		</Reference>
 		<Reference Include="Elements.Core">
-		    <HintPath>$(ResonitePath)Resonite_Data\Managed\Elements.Core.dll</HintPath>
+		    <HintPath>$(ResonitePath)Elements.Core.dll</HintPath>
 		    <Private>False</Private>
 		</Reference>
 		<Reference Include="SkyFrost.Base.Models">
-		  <HintPath>$(ResonitePath)Resonite_Data\Managed\SkyFrost.Base.Models.dll</HintPath>
-		</Reference>
-		<Reference Include="System">
-		    <HintPath>$(ResonitePath)Resonite_Data\Managed\System.dll</HintPath>
-		    <Private>False</Private>
-		</Reference>
-		<Reference Include="System.Numerics">
-		    <HintPath>$(ResonitePath)Resonite_Data\Managed\System.Numerics.dll</HintPath>
-		    <Private>False</Private>
+		  <HintPath>$(ResonitePath)SkyFrost.Base.Models.dll</HintPath>
 		</Reference>
 		<Reference Include="Elements.Assets">
-		    <HintPath>$(ResonitePath)Resonite_Data\Managed\Elements.Assets.dll</HintPath>
+		    <HintPath>$(ResonitePath)Elements.Assets.dll</HintPath>
 		    <Private>False</Private>
 		</Reference>
 		<Reference Include="SkyFrost.Base">
-		    <HintPath>$(ResonitePath)Resonite_Data\Managed\SkyFrost.Base.dll</HintPath>
+		    <HintPath>$(ResonitePath)SkyFrost.Base.dll</HintPath>
+		    <Private>False</Private>
+		</Reference>
+		<Reference Include="Renderite.Shared">
+		    <HintPath>$(ResonitePath)Renderite.Shared.dll</HintPath>
 		    <Private>False</Private>
 		</Reference>
 	</ItemGroup>

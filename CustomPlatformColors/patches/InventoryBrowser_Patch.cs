@@ -8,6 +8,7 @@ using FrooxEngine.Store;
 using EnumsNET;
 using SkyFrost.Base;
 using System.Threading.Tasks;
+using Renderite.Shared;
 
 namespace CustomPlatformColors.Patches
 {

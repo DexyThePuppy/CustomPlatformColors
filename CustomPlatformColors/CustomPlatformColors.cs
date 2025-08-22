@@ -8,6 +8,7 @@ using FrooxEngine.Store;
 using EnumsNET;
 using SkyFrost.Base;
 using FrooxEngine.UIX;
+using Renderite.Shared;
 
 namespace CustomPlatformColors
 {
@@ -60,20 +61,36 @@ namespace CustomPlatformColors
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<dummy> spacerColorGeneration = new("spacerColorGeneration", "--- Color Generation Settings ---");
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<float> midSaturationFactor = new("midSaturationFactor", "Mid saturation factor", () => 0.75f);
+        public static readonly ModConfigurationKey<float> midSaturationFactor = new("midSaturationFactor", "Mid saturation factor", () => 0.45f);
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<float> midBrightnessFactor = new("midBrightnessFactor", "Mid color brightness factor (0.0-1.0)", () => 0.247f);
+        public static readonly ModConfigurationKey<float> midBrightnessFactor = new("midBrightnessFactor", "Mid color brightness factor (0.0-1.0)", () => 0.501f);
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<float> subSaturationFactor = new("subSaturationFactor", "Sub saturation factor", () => 0.45f);
+        public static readonly ModConfigurationKey<float> subSaturationFactor = new("subSaturationFactor", "Sub saturation factor", () => 0.75f);
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<float> subBrightnessFactor = new("subBrightnessFactor", "Sub color brightness factor (0.0-1.0)", () => 0.501f);
+        public static readonly ModConfigurationKey<float> subBrightnessFactor = new("subBrightnessFactor", "Sub color brightness factor (0.0-1.0)", () => 0.247f);
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<float> darkBrightnessFactor = new("darkBrightnessFactor", "Dark color brightness factor (0.0-1.0)", () => 0.165f);
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<float> darkSaturationFactor = new("darkSaturationFactor", "Dark saturation factor", () => 0.25f);
 
+        // Helper method to get configuration values
+        public static colorX GetValue(ModConfigurationKey<colorX> key)
+        {
+            if (Config == null) 
+                return new colorX(1, 1, 1, 1); // Default white color
+            return Config.GetValue(key);
+        }
+
+        // Helper method to get boolean configuration values
+        public static bool GetValue(ModConfigurationKey<bool> key)
+        {
+            if (Config == null) 
+                return false;
+            return Config.GetValue(key);
+        }
+
         // Helper method to get float configuration values
-        private static float GetValue(ModConfigurationKey<float> key)
+        public static float GetValue(ModConfigurationKey<float> key)
         {
             if (Config == null) 
                 return 0.5f; // Safe default brightness factor
@@ -82,7 +99,7 @@ namespace CustomPlatformColors
 
         // Helper method to generate universal color variants that preserve hue while adjusting brightness/saturation
         // Creates a proper color curve for any base color, not just browns
-        private static colorX GenerateDarkerShade(colorX baseColor, ModConfigurationKey<float> brightnessFactorKey)
+        public static colorX GenerateDarkerShade(colorX baseColor, ModConfigurationKey<float> brightnessFactorKey)
         {
             float targetBrightness = GetValue(brightnessFactorKey);
             bool isDarkColor = brightnessFactorKey == darkBrightnessFactor;
@@ -260,7 +277,7 @@ namespace CustomPlatformColors
         public static colorX GetInventoryFavouriteColor() => GenerateDarkerShade(GetValue(heroPurple), subBrightnessFactor);
 
         [AutoRegisterConfigKey]
-        public static readonly ModConfigurationKey<Uri> customDashBackgroundTexture = new("customDashBackgroundTexture", "Custom dashboard background texture URL", () => null);
+        public static readonly ModConfigurationKey<Uri> customDashBackgroundTexture = new("customDashBackgroundTexture", "Custom dashboard background texture URL", () => new Uri("resonite-data:///"));
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<bool> useCustomDashBackground = new("useCustomDashBackground", "Use custom background texture", () => false);
 
@@ -319,30 +336,6 @@ namespace CustomPlatformColors
             }
         }
 		
-        // Helper method to get configuration values
-        private static colorX GetValue(ModConfigurationKey<colorX> key)
-        {
-            if (Config == null) 
-                return new colorX(1, 1, 1, 1); // Default white color
-            return Config.GetValue(key);
-        }
-
-        // Helper method to get boolean configuration values
-        private static bool GetValue(ModConfigurationKey<bool> key)
-        {
-            if (Config == null) 
-                return false;
-            return Config.GetValue(key);
-        }
-
-        // Helper methods to get auto-generated dark colors for use in patch files
-        public static colorX GetDarkOrange() => GenerateDarkerShade(GetValue(heroOrange), darkBrightnessFactor);
-        public static colorX GetDarkYellow() => GenerateDarkerShade(GetValue(heroYellow), darkBrightnessFactor);
-        public static colorX GetDarkGreen() => GenerateDarkerShade(GetValue(heroGreen), darkBrightnessFactor);
-        public static colorX GetDarkRed() => GenerateDarkerShade(GetValue(heroRed), darkBrightnessFactor);
-        public static colorX GetDarkCyan() => GenerateDarkerShade(GetValue(heroCyan), darkBrightnessFactor);
-        public static colorX GetDarkPurple() => GenerateDarkerShade(GetValue(heroPurple), darkBrightnessFactor);
-
         public void UpdateColors(PlatformColorPalette palette)
         {
             if (palette == null) return;
@@ -409,7 +402,15 @@ namespace CustomPlatformColors
 				}
 			}
 		}
-	}
+
+        // Helper methods to get auto-generated dark colors for use in patch files
+        public static colorX GetDarkOrange() => GenerateDarkerShade(GetValue(heroOrange), darkBrightnessFactor);
+        public static colorX GetDarkYellow() => GenerateDarkerShade(GetValue(heroYellow), darkBrightnessFactor);
+        public static colorX GetDarkGreen() => GenerateDarkerShade(GetValue(heroGreen), darkBrightnessFactor);
+        public static colorX GetDarkRed() => GenerateDarkerShade(GetValue(heroRed), darkBrightnessFactor);
+        public static colorX GetDarkCyan() => GenerateDarkerShade(GetValue(heroCyan), darkBrightnessFactor);
+        public static colorX GetDarkPurple() => GenerateDarkerShade(GetValue(heroPurple), darkBrightnessFactor);
+    }
 }
 
 // LeCloutPanda was here

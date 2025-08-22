@@ -8,6 +8,7 @@ using System.Reflection.Emit;
 using System.Reflection;
 using ResoniteModLoader;
 using System.Threading.Tasks;
+using Renderite.Shared;
 
 namespace CustomPlatformColors.Patches
 {

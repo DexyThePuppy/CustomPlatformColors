@@ -4,6 +4,7 @@ using Elements.Core;
 using FrooxEngine.UIX;
 using CustomPlatformColors;
 using System;
+using Renderite.Shared;
 
 namespace CustomPlatformColors.Patches
 {
@@ -147,18 +148,40 @@ namespace CustomPlatformColors.Patches
                 
                 // Let our implementation run but with color override
                 Uri backgroundTexture = __instance.Engine.InUniverse ? null : RadiantDashScreen.BackgroundTexture;
-                
-                // Apply custom color if available
-                colorX uiTint = UserspaceRadiantDash.DEFAULT_BACKGROUND;
-                if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.dashBackgroundColor, out colorX uiCustomColor))
-                {
-                    uiTint = uiCustomColor;
-                }
-                
                 if (backgroundTexture != null)
-                    ui.TiledRawImage((IAssetProvider<ITexture2D>)ui.Root.AttachTexture(backgroundTexture), uiTint).TileSize.Value = RadiantDashScreen.BackgroundTiling;
+                {
+                    IAssetProvider<ITexture2D> texture = ui.Root.AttachTexture(backgroundTexture);
+                    if (texture != null)
+                    {
+                        // Apply custom color if available
+                        colorX uiTint = UserspaceRadiantDash.DEFAULT_BACKGROUND;
+                        if (CustomPlatformColors.Config?.TryGetValue(CustomPlatformColors.dashBackgroundColor, out colorX uiCustomColor) ?? false)
+                        {
+                            uiTint = uiCustomColor;
+                        }
+                        
+                        ui.TiledRawImage(texture, uiTint).TileSize.Value = RadiantDashScreen.BackgroundTiling;
+                    }
+                    else
+                    {
+                        // Fallback to plain image if texture fails to load
+                        colorX uiTint = UserspaceRadiantDash.DEFAULT_BACKGROUND;
+                        if (CustomPlatformColors.Config?.TryGetValue(CustomPlatformColors.dashBackgroundColor, out colorX uiCustomColor) ?? false)
+                        {
+                            uiTint = uiCustomColor;
+                        }
+                        ui.Image(uiTint);
+                    }
+                }
                 else
+                {
+                    colorX uiTint = UserspaceRadiantDash.DEFAULT_BACKGROUND;
+                    if (CustomPlatformColors.Config?.TryGetValue(CustomPlatformColors.dashBackgroundColor, out colorX uiCustomColor) ?? false)
+                    {
+                        uiTint = uiCustomColor;
+                    }
                     ui.Image(uiTint);
+                }
                     
                 if (nest)
                     ui.Nest();

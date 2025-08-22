@@ -4,6 +4,7 @@ using FrooxEngine.UIX;
 using Elements.Core;
 using System;
 using SkyFrost.Base;
+using Renderite.Shared;
 
 namespace CustomPlatformColors.Patches
 {
@@ -294,22 +295,28 @@ namespace CustomPlatformColors.Patches
                     if (messagesRootField != null)
                     {
                         var messagesRoot = messagesRootField.GetValue(__instance) as SyncRef<Slot>;
-                        if (messagesRoot != null && messagesRoot.Target != null)
+                        if (messagesRoot?.Target != null)
                         {
                             // Look for timestamp panels in the messages root
                             foreach (Slot child in messagesRoot.Target.Children)
                             {
+                                if (child == null) continue;
+                                
                                 // Look for timestamp elements - they have specific characteristics
                                 var images = child.GetComponentsInChildren<Image>();
+                                if (images == null) continue;
+                                
                                 foreach (Image img in images)
                                 {
+                                    if (img == null) continue;
+                                    
                                     if (img.Tint.Value == RadiantUI_Constants.Neutrals.MID)
                                     {
-                                        Text text = img.Slot.GetComponentInChildren<Text>();
+                                        Text text = img.Slot?.GetComponentInChildren<Text>();
                                         if (text != null && text.Size.Value == 12f)
                                         {
                                             // This is a timestamp panel - destroy it
-                                            img.Slot.Destroy();
+                                            img.Slot?.Destroy();
                                         }
                                     }
                                 }
@@ -345,27 +352,21 @@ namespace CustomPlatformColors.Patches
                             {
                                 if (message.IsSent)
                                 {
-                                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.heroGreen, out colorX heroColor))
+                                    if (CustomPlatformColors.Config?.TryGetValue(CustomPlatformColors.heroGreen, out colorX heroColor) ?? false)
                                     {
                                         texture.ForegroundColor.Value = heroColor;
                                     }
                                     colorX darkColor = CustomPlatformColors.GetDarkGreen();
-                                    if (CustomPlatformColors.Config != null)
-                                    {
-                                        texture.BackgroundColor.Value = darkColor;
-                                    }
+                                    texture.BackgroundColor.Value = darkColor;
                                 }
                                 else
                                 {
-                                    if (CustomPlatformColors.Config.TryGetValue(CustomPlatformColors.heroCyan, out colorX heroColor))
+                                    if (CustomPlatformColors.Config?.TryGetValue(CustomPlatformColors.heroCyan, out colorX heroColor) ?? false)
                                     {
                                         texture.ForegroundColor.Value = heroColor;
                                     }
                                     colorX darkColor = CustomPlatformColors.GetDarkCyan();
-                                    if (CustomPlatformColors.Config != null)
-                                    {
-                                        texture.BackgroundColor.Value = darkColor;
-                                    }
+                                    texture.BackgroundColor.Value = darkColor;
                                 }
                             }
                         }

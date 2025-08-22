@@ -398,4 +398,6 @@ FodyWeavers.xsd
 *.sln.iml
 /References
 /WIP
+
 /FrooxEngine
+/Renderite.Shared

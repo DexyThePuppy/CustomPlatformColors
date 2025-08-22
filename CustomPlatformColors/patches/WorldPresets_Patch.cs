@@ -4,6 +4,7 @@ using Elements.Core;
 using CustomPlatformColors;
 using System;
 using ResoniteModLoader;
+using Renderite.Shared;
 
 namespace CustomPlatformColors.Patches
 {
