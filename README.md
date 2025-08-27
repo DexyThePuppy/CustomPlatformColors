@@ -27,9 +27,9 @@
 
 ## 🧩 Exclusive Patches
 
-| Contacts |
+| *(WorldPresets - Grid)*<br>Grid Texture component patch |
 |:-------------:|
-| <img src="CustomPlatformColors/Images/NewWorld_GridTexture.png" alt="Contacts interface with custom colors" width="300"/> | 
+| <img src="CustomPlatformColors/Images/NewWorld_GridTexture.png" alt="Contacts interface with custom colors" width="300"/><br>Patches the Grid Texture in the Grid World Preset | 
 
 ## 🐕 Installation
 
