@@ -27,9 +27,9 @@
 
 ## 🧩 Exclusive Patches
 
-| *(WorldPresets - Grid)*<br>Grid Texture component patch |
-|:-------------:|
-| <img src="CustomPlatformColors/Images/NewWorld_GridTexture.png" alt="Contacts interface with custom colors" width="300"/><br>Patches the Grid Texture in the Grid World Preset | 
+| *(WorldPresets - Grid)*<br>Grid Texture component patch | *(WorldPresets - Platform)*<br>Platform Material patch |
+|:-------------:|:-------------:|
+| <img src="CustomPlatformColors/Images/NewWorld_GridTexture.png" alt="Contacts interface with custom colors" width="300"/><br>Patches the Grid Texture in the Grid World Preset | <img src="CustomPlatformColors/Images/NewWorld_Platform.png" alt="Contacts interface with custom colors" width="300"/><br>Patches the Platform Material color in the Platform World Preset | 
 
 ## 🐕 Installation
 
