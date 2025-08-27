@@ -1,6 +1,12 @@
-CustomPlatformColors
+# CustomPlatformColors
 
-*Woof woof!* A [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) mod for [Resonite](https://resonite.com/) that lets you customize your platform's color scheme! 🎨
+*Woof woof!* A [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) mod for [Resonite](https://resonite.com/) that lets you change the `<PlatformColorPalette>` Component and more smaller seperate patches to customize your Resonite client colors! 🎨
+
+## ⚠️ Important Notice
+
+**This mod primarily focuses on local user interface elements.** All color customizations are **client-side only** and will only be visible to you. Other users will not see your custom colors, and any UI elements outside of your local user interface (such as world objects, other users' content, or shared interface elements) remain unchanged.
+
+**For elements outside of local user space:** This mod applies a **local-only override** to the `<PlatformColorPalette>` Component for any elements that use it. This override is **only local** - other users will still see the default platform colors even if those elements use the platform color palette.
 
 ## 🖼️ Screenshots
 
@@ -19,19 +25,6 @@ CustomPlatformColors
 |:-------------:|:-------------:|:-------------:|
 | <img src="CustomPlatformColors/Images/Contacts.png" alt="Contacts interface with custom colors" width="300"/> | <img src="CustomPlatformColors/Images/Session.png" alt="Session interface with custom colors" width="300"/> | <img src="CustomPlatformColors/Images/PlatformColorPalette.png" alt="Worlds browser with custom colors" width="100"/>
 
-## ⚠️ Important Notice
-
-**This mod primarily focuses on local user interface elements.** All color customizations are **client-side only** and will only be visible to you. Other users will not see your custom colors, and any UI elements outside of your local user interface (such as world objects, other users' content, or shared interface elements) remain unchanged.
-
-**For elements outside of local user space:** This mod applies a **local-only override** to the `<PlatformColorPalette>` Component for any elements that use it. This override is **only local** - other users will still see the default platform colors even if those elements use the platform color palette.
-
-## 🦴 Features
-
-- Customize all platform UI colors
-- Change neutral, hero, and accent colors
-- Personalize button and text appearances
-- Live color updates without restart
-- Easy configuration through mod settings
 
 ## 🐕 Installation
 
@@ -39,7 +32,9 @@ CustomPlatformColors
 2. Drop `CustomPlatformColors.dll` into your `rml_mods` folder
 3. Launch Resonite and check logs to verify installation
 
+## 🧩 Extras
 
+- these facets were modified to use the `<PlatformColorPalette>` Component.
 
 | Worlds<br>Seachbar | Worlds<br>PaginingControl | Worlds<br>Filter | Settings<br>Panel |
 |--------------|--------------|--------------|--------------|
@@ -61,7 +56,9 @@ CustomPlatformColors
 | `neutralLight` | Color | Light neutral color | Default light |
 
 ### **Hero Colors (Primary Colors)**
-*These colors automatically generate Mid/Sub/Dark variants*
+*These colors automatically generate Mid/Sub/Dark variants*<br>
+
+**Note:** All colors automatically generate Mid, Sub, and Dark variants based on your Hero colors and generation settings.
 
 | Setting | Type | Description | Default |
 |---------|------|-------------|---------|
@@ -132,10 +129,6 @@ CustomPlatformColors
 |---------|------|-------------|---------|
 | `customDashBackgroundTexture` | URI | Custom dashboard background texture URL | `resonite-data:///` |
 | `useCustomDashBackground` | Boolean | Use custom background texture | `false` |
-
----
-
-**Note:** All colors automatically generate Mid, Sub, and Dark variants based on your Hero colors and generation settings.
 
 
 ---
