@@ -8,6 +8,8 @@
 
 **For elements outside of local user space:** This mod applies a **local-only override** to the `<PlatformColorPalette>` Component for any elements that use it. This override is **only local** - other users will still see the default platform colors even if those elements use the platform color palette.
 
+**The "Exclusive" patches may modify things that will be visible for others but never modify other users elements.**
+
 ## 🖼️ Screenshots
 
 
@@ -29,7 +31,7 @@
 
 | *(WorldPresets - Grid)*<br>Grid Texture component patch | *(WorldPresets - Platform)*<br>Platform Material patch |
 |:-------------:|:-------------:|
-| <img src="CustomPlatformColors/Images/NewWorld_GridTexture.png" alt="Contacts interface with custom colors" width="300"/><br>Patches the Grid Texture in the Grid World Preset | <img src="CustomPlatformColors/Images/NewWorld_Platform.png" alt="Contacts interface with custom colors" width="300"/><br>Patches the Platform Material color in the Platform World Preset | 
+| <img src="CustomPlatformColors/Images/NewWorld_GridTexture.png" alt="Contacts interface with custom colors" width="300"/><br>Patches the Grid Texture in the Grid World Preset<br>*(only applies in world creation process!)* | <img src="CustomPlatformColors/Images/NewWorld_Platform.png" alt="Contacts interface with custom colors" width="300"/><br>Patches the Platform Material color in the Platform World Preset<br>*(only applies in world creation process!)* | 
 
 ## 🐕 Installation
 
