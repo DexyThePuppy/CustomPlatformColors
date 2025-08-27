@@ -25,6 +25,11 @@
 |:-------------:|:-------------:|:-------------:|
 | <img src="CustomPlatformColors/Images/Contacts.png" alt="Contacts interface with custom colors" width="300"/> | <img src="CustomPlatformColors/Images/Session.png" alt="Session interface with custom colors" width="300"/> | <img src="CustomPlatformColors/Images/PlatformColorPalette.png" alt="Worlds browser with custom colors" width="100"/>
 
+## 🧩 Exclusive Patches
+
+| Contacts |
+|:-------------:|
+| <img src="CustomPlatformColors/Images/NewWorld_GridTexture.png" alt="Contacts interface with custom colors" width="300"/> | 
 
 ## 🐕 Installation
 
