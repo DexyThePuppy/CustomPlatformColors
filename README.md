@@ -41,7 +41,7 @@ CustomPlatformColors
 
 
 
-| Worlds - Seachbar | Worlds - PaginingControl | Worlds - Filter | Settings Facet |
+| Worlds<br>Seachbar | Worlds<br>PaginingControl | Worlds<br>Filter | Settings<br>Panel |
 |--------------|--------------|--------------|--------------|
 <img src="CustomPlatformColors/Images/Facet-World-Search.png" alt="Worlds - Searchbar" width="200"/><br>`resrec:///U-1NWSXyNbyjY/R-f2721f5d-c850-4955-bb0e-2775533413db` | <img src="CustomPlatformColors/Images/Facet-World-Pagining.png" alt="Worlds - PaginingControl" width="200"/><br>`resrec:///U-1NWSXyNbyjY/R-de9d3dda-a9c8-4861-a5c4-c718b7fc7495` | <img src="CustomPlatformColors/Images/Facet-World-Filter.png" alt="Worlds - Filter" width="100"/><br>`resrec:///U-1NWSXyNbyjY/R-d64cf878-7a3f-4ad6-b6bb-6cee3945ba5d` | <img src="CustomPlatformColors/Images/Facet-Settings.png" alt="Settings Facet" width="200"/><br>`resrec:///U-1NWSXyNbyjY/R-20b23e90-ea58-4447-a621-7454a996e098`
 
